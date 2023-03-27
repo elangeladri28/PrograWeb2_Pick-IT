@@ -6,10 +6,10 @@ import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 
 const ProfilePage = () => {
-    
-    const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
-    return (
+  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+
+  return (
     <Box>
       <Navbar />
       <Box
@@ -22,7 +22,7 @@ const ProfilePage = () => {
         <Box flexBasis={isNonMobileScreens ? "50%" : undefined}>
           <UserWidget userId={"userId"} picturePath={"user.picturePath"} />
         </Box>
-        
+
       </Box>
     </Box>
   );

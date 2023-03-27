@@ -3,7 +3,7 @@ import HomePage from 'scenes/homePage';
 import LoginPage from 'scenes/loginPage';
 import ProfilePage from 'scenes/profilePage';
 import SearchPage from 'scenes/searchPage';
-import ProductePage from 'scenes/profilePage';
+import ProductPage from 'scenes/productPage';
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -27,7 +27,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/product" element={<ProductePage />} />
+            <Route path="/product" element={<ProductPage />} />
 
           </Routes>
         </ThemeProvider>

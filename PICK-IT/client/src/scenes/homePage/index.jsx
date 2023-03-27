@@ -19,7 +19,6 @@ const HomePage = () => {
         // gap="0.5rem"
         flexDirection="column"
       >
-        
           <ProductCarousel />
           <Box marginBottom="2.5rem" display="block" sx={{ p: "20px", backgroundColor: '#DA0037'}}></Box>
         

@@ -1,9 +1,13 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+
+    const primaryDark = theme.palette.primary.dark;
 
     return (
         <Box>
@@ -13,9 +17,20 @@ const LoginPage = () => {
             p="1rem 6%"
             textAlign="center"
           >
-            <Typography fontWeight="bold" fontSize="32px" color="primary">
-              PICK-IT
-            </Typography>
+            <Typography
+                    fontWeight="bold"
+                    fontSize="clamp(1rem, 2rem, 2.25rem)"
+                    color="primary"
+                    onClick={() => navigate("/")}
+                    sx={{
+                        "&:hover": {
+                            color: primaryDark,
+                            cursor: "pointer",
+                        },
+                    }}
+                >
+                    PICK-IT
+                </Typography>
           </Box>
     
           <Box
