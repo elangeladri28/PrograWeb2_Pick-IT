@@ -1,12 +1,11 @@
 import {
-    ManageAccountsOutlined,
     EditOutlined,
     LocationOnOutlined,
     EmailOutlined,
-    VpnKeyOutlinedIcon,
+    BadgeOutlined,
     KeyOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, Button, useTheme, IconButton, TextField } from "@mui/material";
+import { Box, Typography, Divider, Button, useTheme, IconButton, TextField, DialogContent } from "@mui/material";
 import { Formik } from "formik";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
@@ -48,19 +47,22 @@ const UserWidget = ({ userId, picturePath }) => {
                 <WidgetWrapper>
                     <form>
                         {/* FOTO Y NOMBRE */}
+                        <Box display="flex" justifyContent="center" pb="1rem"
+                        onClick={() => navigate(`/profile/${userId}`)}
+                        >
+                        <UserImage image={picturePath} size={"250px"} />
+                        </Box>
+
+                        <Divider />
+                        
                         <FlexBetween
                             gap="0.5rem"
-                            pb="1.1rem"
-                            onClick={() => navigate(`/profile/${userId}`)}
                         >
+                            
                             <FlexBetween gap="1rem">
-                                <UserImage image={picturePath} />
-                                <Box 
-                                display="grid"
-                                gap="30px"
-                                gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                                >
-
+                                <Box p="1rem 0">
+                                <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+                                    <BadgeOutlined fontSize="large" sx={{ color: main }} />
                                     <TextField
                                         disabled
                                         label="Nombre(s)"
@@ -84,6 +86,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                         helperText={touched.lastName && errors.lastName}
                                         sx={{ gridColumn: "span 2" }}
                                     />
+                                </Box>
                                 </Box>
                             </FlexBetween>
                             <IconButton>
