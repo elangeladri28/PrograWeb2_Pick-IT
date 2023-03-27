@@ -66,7 +66,7 @@ const Navbar = () => {
                 {isNonMobileScreens && (
                     <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
                         <InputBase placeholder="Buscar producto..." />
-                        <IconButton>
+                        <IconButton onClick={() => navigate("/search")}>
                             <Search />
                         </IconButton>
                     </FlexBetween>
