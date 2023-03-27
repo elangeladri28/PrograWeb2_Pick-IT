@@ -9,16 +9,19 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
+  Drawer,
 } from "@mui/material";
 import {
   Search,
-  Message,
+  ShoppingCart,
   DarkMode,
   LightMode,
   Notifications,
   Help,
   Menu,
   Close,
+  Person,
+  ShoppingBag,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
@@ -30,6 +33,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
+    const isLogged = true;
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
     const theme = useTheme();
@@ -61,7 +65,7 @@ const Navbar = () => {
 
                 {isNonMobileScreens && (
                     <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
-                        <InputBase placeholder="Search..." />
+                        <InputBase placeholder="Buscar producto..." />
                         <IconButton>
                             <Search />
                         </IconButton>
@@ -79,9 +83,20 @@ const Navbar = () => {
                             <LightMode sx={{ color: dark, fontSize: "25px" }} />
                         )}
                     </IconButton>
-                    <Message sx={{ fontSize: "25px" }} />
-                    <Notifications sx={{ fontSize: "25px" }} />
-                    <Help sx={{ fontSize: "25px" }} />
+                    
+                    <IconButton>
+                    <ShoppingCart sx={{ fontSize: "25px" }} />
+                    </IconButton>
+
+                    <IconButton>
+                    <ShoppingBag sx={{ fontSize: "25px" }} />
+                    </IconButton>
+
+                    {!isLogged ? (
+                        <IconButton onClick={() => navigate("/login")}>
+                            <Person sx={{ fontSize: "25px" }} />
+                        </IconButton>
+                    ) : (
                     <FormControl variant="standard" value={fullName}>
                         <Select
                             value={fullName}
@@ -100,12 +115,13 @@ const Navbar = () => {
                             }}
                             input={<InputBase />}
                         >
-                            <MenuItem value={fullName}>
+                            <MenuItem onClick={() => navigate("/profile/userId")} value={fullName}>
                                 <Typography>{fullName}</Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+                            <MenuItem onClick={() => navigate("/login")/*</Select>dispatch(setLogout())*/}>Cerrar Sesión</MenuItem>
                         </Select>
                     </FormControl>
+                    )}
                 </FlexBetween>
             ) : (
                 <IconButton
@@ -154,9 +170,9 @@ const Navbar = () => {
                                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
                             )}
                         </IconButton>
-                        <Message sx={{ fontSize: "25px" }} />
-                        <Notifications sx={{ fontSize: "25px" }} />
-                        <Help sx={{ fontSize: "25px" }} />
+                        <ShoppingCart sx={{ fontSize: "25px" }} />
+                        <ShoppingBag sx={{ fontSize: "25px" }} />
+                        
                         <FormControl variant="standard" value={fullName}>
                             <Select
                                 value={fullName}
