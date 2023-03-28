@@ -5,7 +5,7 @@ const initialState = {
     user: null,
     token: null,
     productos: [],
-    carrito: null,
+    cart: null,
     whishlists: []
 }
 
@@ -23,9 +23,12 @@ export const authSlice = createSlice({
         setLogout: (state) => {
             state.user = null;
             state.token = null;
-        }
+        },
+        setShopppigCart: (state) => {
+           
+        },
     }
 })
 
-export const { setMode, setLogin, setLogout} = authSlice.actions;
+export const { setMode, setLogin, setLogout, setShoppingCart} = authSlice.actions;
 export default authSlice.reducer;

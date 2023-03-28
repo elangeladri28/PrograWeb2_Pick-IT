@@ -61,19 +61,19 @@ const CommentWidget = () => {
                 flexWrap="wrap"
                 justifyContent="center"
             >
-                    {itemData.map((item) => (
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardContent>
-                                    <Typography color={medium} gutterBottom variant="h5" component="div">
-                                        {item.name}
-                                    </Typography>
-                                    <Typography color={dark} variant="body2">
-                                        {item.comment}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                    ))}
-                
+                {itemData.map((item) => (
+                    <Card sx={{ maxWidth: 345 }}>
+                        <CardContent>
+                            <Typography color={medium} gutterBottom variant="h5" component="div">
+                                {item.name}
+                            </Typography>
+                            <Typography color={dark} variant="body2">
+                                {item.comment}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                ))}
+
             </WidgetWrapper>
 
         </Box>

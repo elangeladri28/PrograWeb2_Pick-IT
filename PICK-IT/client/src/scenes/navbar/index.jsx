@@ -16,17 +16,16 @@ import {
   ShoppingCart,
   DarkMode,
   LightMode,
-  Notifications,
-  Help,
   Menu,
   Close,
   Person,
   ShoppingBag,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state";
+import { setMode, setLogout, setShoppingCart } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import ShoppingCartWidget from "scenes/widgets/ShoppingCartWidget";
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -44,6 +43,18 @@ const Navbar = () => {
     const alt = theme.palette.background.alt;
 
     const fullName = "Jesús Ortíz"; //`${user.firstName} ${user.lastName}`;
+
+    const [state, setState] = useState({
+        right:false,
+    });
+
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
 
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -76,6 +87,7 @@ const Navbar = () => {
             {/* DESKTOP NAV */}
             {isNonMobileScreens ? (
                 <FlexBetween gap="2rem">
+                    <ShoppingCartWidget state={state} setState={setState} toggleDrawer={toggleDrawer} />
                     <IconButton onClick={() => dispatch(setMode())}>
                         {theme.palette.mode === "dark" ? (
                             <DarkMode sx={{ fontSize: "25px" }} />
@@ -84,13 +96,14 @@ const Navbar = () => {
                         )}
                     </IconButton>
                     
-                    <IconButton>
+                    <IconButton onClick={toggleDrawer("left", true)}>
                     <ShoppingCart sx={{ fontSize: "25px" }} />
                     </IconButton>
-
+                    
                     <IconButton>
                     <ShoppingBag sx={{ fontSize: "25px" }} />
                     </IconButton>
+                   
 
                     {!isLogged ? (
                         <IconButton onClick={() => navigate("/login")}>
