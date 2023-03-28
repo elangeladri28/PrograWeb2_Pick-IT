@@ -1,0 +1,28 @@
+{
+  "name": "prograweb2_pick-it",
+  "version": "0.0.1",
+  "description": "Proyecto escolar de ecomers con nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elangeladri28/PrograWeb2_Pick-IT.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elangeladri28/PrograWeb2_Pick-IT/issues"
+  },
+  "homepage": "https://github.com/elangeladri28/PrograWeb2_Pick-IT#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
