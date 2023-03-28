@@ -100,7 +100,7 @@ const Navbar = () => {
                     <ShoppingCart sx={{ fontSize: "25px" }} />
                     </IconButton>
                     
-                    <IconButton>
+                    <IconButton onClick={() => navigate("/whishlist")}>
                     <ShoppingBag sx={{ fontSize: "25px" }} />
                     </IconButton>
                    

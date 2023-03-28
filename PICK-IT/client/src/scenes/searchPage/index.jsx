@@ -8,19 +8,20 @@ const SearchPage = () => {
 
     return (
         <Box>
-        <Navbar />
-        <Box
-        width="100%"
-        padding="2rem 6%"
-        display={isNonMobileScreens ? "flex" : "block"}
-        justifyContent="center"
-        flexDirection="column"
-        >
-            <ProductLargeWidget/>
-            <ProductLargeWidget/>
-            <ProductLargeWidget/>
-            <ProductLargeWidget/>
-        </Box>
+            <Navbar />
+            <Box
+                width="100%"
+                padding="2rem 6%"
+                display={isNonMobileScreens ? "flex" : "block"}
+                justifyContent="center"
+                flexDirection="column"
+            >
+
+                <ProductLargeWidget />
+                <ProductLargeWidget />
+                <ProductLargeWidget />
+                <ProductLargeWidget />
+            </Box>
         </Box>
     );
 };

@@ -4,6 +4,7 @@ import LoginPage from 'scenes/loginPage';
 import ProfilePage from 'scenes/profilePage';
 import SearchPage from 'scenes/searchPage';
 import ProductPage from 'scenes/productPage';
+import WishlistPage from 'scenes/wishlistPage';
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/product" element={<ProductPage />} />
+            <Route path="/whishlist" element={<WishlistPage />} />
 
           </Routes>
         </ThemeProvider>
