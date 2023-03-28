@@ -1,25 +1,29 @@
 const {Schema, model} = require('mongoose');
 
 const UserSchema = Schema({
-    name:{
+    firstname:{
         type:String,
-        required:[true, 'El nombre del usuario es obligatorio']
+        required:[true, 'El nombre del usuario es obligatorio'],
     },
     lastname:{
         type:String,
-        required:[true, 'El apellido del usuario es obligatorio']
+        required:[true, 'El apellido del usuario es obligatorio'],
     },
-    address:{
+    location:{
         type:String
     },
-    password:{
-        type:String,
-        required:[true, 'La contrasenia es obligatoria']
+    picturePath: {
+        type: String,
+        default: "",
     },
     email:{
         type:String,
         required:[true, 'El correo del usuario es obligatorio'],
         unique: true
+    },
+    password:{
+        type:String,
+        required:[true, 'La contrasenia es obligatoria']
     },
     rol:{
         type:String,
