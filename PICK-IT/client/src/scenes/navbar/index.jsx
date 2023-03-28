@@ -96,7 +96,7 @@ const Navbar = () => {
                         )}
                     </IconButton>
                     
-                    <IconButton onClick={toggleDrawer("left", true)}>
+                    <IconButton onClick={() => navigate("/shoppingcart")}>
                     <ShoppingCart sx={{ fontSize: "25px" }} />
                     </IconButton>
                     
