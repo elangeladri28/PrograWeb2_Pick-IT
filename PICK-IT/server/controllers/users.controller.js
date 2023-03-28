@@ -3,20 +3,24 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/user.model');
 
 
+const register = async (req = request, res = response) => {
+    console.log(req.body);
+    try {
+    const { firstname, lastname, location, picture, email, password } = req.body;
+    const user = new User({firstname, lastname, location, picture, email, password});
+    console.log(user);
 
-const register = (req = request, res = response) => {
-
+    //const salt = bcryptjs.genSalt();
+    //user.password = bcryptjs.hash(password, salt);
     
-    const { name, lastname, email, address, password} = req.body;
-    const user = new User({name, lastname, email, address, password});
-
-    const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync(password, salt);
+    const savedUser = await user.save();
     
-    user.save();
+    //res.send(user);
 
-
-    res.send(user);
+    res.status(201).json(savedUser);
+    } catch (err) {
+    res.status(500).json({ error: err.message });
+    }
     //VALIDAR LA SESION, SI LA SESION EXISTE SE ENVIA A LA PAGINA PRINCIAPAL
     // CON LA SESION INICIADA
     // if(req.session.user){
@@ -31,8 +35,6 @@ const register = (req = request, res = response) => {
     // req.session.user = correo;
 
     // res.status(200).send('Usuario registrado');
-
-    return;
 }
 
 const login = async (req = request, res = response) => {
