@@ -35,12 +35,31 @@ const register = (req = request, res = response) => {
     return;
 }
 
-const newUser = (req = request, res = response) => {
-    res.send('Nuevo usuario pagina');
+const login = async (req = request, res = response) => {
+
+    const { email, password } = req.body;
+    const user = await User.findOne({email});
+
+    if(!user){
+        res.json({
+            msg: "User doesnt exists, create one to login"
+        });
+        return;
+    }
+
+    if(user.password != password ){
+        res.json({
+            msg:"Password is wrong"
+        });
+        return 
+    }
+
+    res.json(user);
+
 }
 
 
 module.exports = {
     register,
-    newUser
+    login
 }
