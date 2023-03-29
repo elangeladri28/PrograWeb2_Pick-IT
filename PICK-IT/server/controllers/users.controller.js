@@ -38,27 +38,28 @@ const register = async (req = request, res = response) => {
 }
 
 const login = async (req = request, res = response) => {
-
+    try {
     const { email, password } = req.body;
-    const user = await User.findOne({email});
+    const user = await User.findOne({email: email});
 
     if(!user){
-        res.json({
-            msg: "User doesnt exists, create one to login"
+        return res.status(400).json({
+            msg: "Usuario incorrecto, crea una para inicar sesión."
         });
-        return;
     }
 
     if(user.password != password ){
-        res.json({
-            msg:"Password is wrong"
+        return res.status(400).json({
+            msg:"Contraseña incorrecta."
         });
-        return 
+        
     }
-
     res.json(user);
 
-}
+    } catch (err) {
+    res.status(500).json({ error: err.message });
+  }    
+};
 
 
 module.exports = {

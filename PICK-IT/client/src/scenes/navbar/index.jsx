@@ -32,7 +32,14 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
-    const isLogged = true;
+    var isLogged = false;
+    var fullName =  null;
+    
+    if(user.email !== undefined){
+        fullName = `${user.firstname} ${user.lastname}`;
+        isLogged = true;
+    }
+
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
     const theme = useTheme();
@@ -42,7 +49,8 @@ const Navbar = () => {
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
 
-    const fullName = "Jesús Ortíz"; //`${user.firstName} ${user.lastName}`;
+
+    
 
     const [state, setState] = useState({
         right:false,
