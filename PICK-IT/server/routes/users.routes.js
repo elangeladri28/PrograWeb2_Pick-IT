@@ -1,6 +1,8 @@
 const {Router} = require('express');
 const {register, login} = require('../controllers/users.controller');
 const { check } = require('express-validator');
+const { valids } = require('../middlewares/valids');
+const { justLetters, pwd } = require('../helpers/validaciones');
 // const { check } = require('../m')
 const router = Router();
 
@@ -13,7 +15,14 @@ const router = Router();
 
 */
 
-router.post('/register', register);
+router.post('/register', [
+    check('firstname').custom(justLetters),
+    check('lastname').custom(justLetters),
+    check('address', 'La direccion es obligatoria'),
+    check('email', 'El correo no es valido y es obligatorio').isEmail(),
+    check('password').custom(pwd),
+    valids
+],register);
 router.post('/login', login);
 
 module.exports = router;
