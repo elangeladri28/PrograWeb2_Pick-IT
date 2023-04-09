@@ -48,21 +48,46 @@ const login = async (req = request, res = response) => {
             });
         }
 
+        if (!user.state) {
+            return res.status(400).json({
+                msg: "Usuario ya no es valido: estado: false."
+            });
+        }
+
         if (user.password != password) {
             return res.status(400).json({
                 msg: "Contraseña incorrecta."
             });
 
         }
-        res.json(user);
+
+        const token = await generarJWT(user.id);
+
+        res.json({
+            user,
+            token
+        });
 
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
+const update = async (req, res) => {
+
+    const {id} = req.params;
+    const {_id, ...rest} = req.body;
+    await User.findByIdAndUpdate(id, rest);
+    const user = await User.findById(id);
+
+    res.json({
+        user,
+    });
+}
+
 
 module.exports = {
     register,
-    login
+    login,
+    update
 }

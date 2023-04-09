@@ -1,8 +1,10 @@
 const {Router} = require('express');
-const {register, login} = require('../controllers/users.controller');
+const {register, login, update} = require('../controllers/users.controller');
 const { check } = require('express-validator');
 const { valids } = require('../middlewares/valids');
+const { userExists } = require('../helpers/db-valids');
 const { justLetters, pwd } = require('../helpers/validaciones');
+const { validarJWT } = require('../middlewares/validar-jwt');
 // const { check } = require('../m')
 const router = Router();
 
@@ -23,6 +25,15 @@ router.post('/register', [
     check('password').custom(pwd),
     valids
 ],register);
-router.post('/login', login);
+router.post('/login', [
+    check('email', 'El correo es obligatorio').isEmail(),
+    check('password', 'El password es obligatorio').notEmpty()
+], login);
+router.put('/:id', [
+    validarJWT,
+    check('id', 'No es un id valido').isMongoId(),
+    check('id').custom(userExists),
+    valids
+],update);
 
 module.exports = router;
