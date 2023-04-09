@@ -12,9 +12,9 @@ const UserSchema = Schema({
     location:{
         type:String
     },
-    picturePath: {
-        type: String,
-        default: "",
+    avatar:{
+        type:String,
+        required:true,
     },
     email:{
         type:String,

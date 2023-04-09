@@ -2,11 +2,11 @@ const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user.model');
 const { generarJWT } = require('../helpers/generar-jwt');
+const fs = require('fs');
 
 
 
 const register = async (req = request, res = response) => {
-    // console.log(req.body);
     try {
 
         //BUSCAR SI EL CORREO YA EXISTE ANTES DE CREAR UN NUEVO USUARIO
@@ -15,9 +15,11 @@ const register = async (req = request, res = response) => {
                 msg:"Este correo ya existe"
             });
 
-        // const { firstname, lastname, location, picture, email, password } = req.body;
+        const { firstname, lastname, location, email, password } = req.body;
+        const { avatar } = req;
         //GENERA EL MODELO DE MONGO
-        const user = new User(req.body);
+        const user = new User({firstname, lastname, location, email, password});
+        user.avatar = avatar;
         // console.log(user);
 
         // const salt = bcryptjs.genSalt();
@@ -33,7 +35,7 @@ const register = async (req = request, res = response) => {
         });
 
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(500).json({ errorENDPOINT: err });
     }
 }
 
