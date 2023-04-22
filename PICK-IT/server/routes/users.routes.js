@@ -36,16 +36,19 @@ router.post('/register', [
     check('address', 'La direccion es obligatoria'),
     check('email', 'El correo no es valido y es obligatorio').isEmail(),
     check('password').custom(pwd),
-    valids,
+    valids
 ],
     register);
 
 router.post('/login', [
+    upload.single(),
     check('email', 'El correo es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').notEmpty()
+    check('password', 'El password es obligatorio').notEmpty(),
+    valids
 ], login);
 
 router.put('/:id', [
+    upload.single(),
     validarJWT,
     check('id', 'No es un id valido').isMongoId(),
     check('id').custom(userExists),
