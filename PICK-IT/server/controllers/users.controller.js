@@ -1,6 +1,7 @@
 const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user.model');
+const Cart = require('../models/cart.model');
 const { generarJWT } = require('../helpers/generar-jwt');
 const fs = require('fs');
 
@@ -21,6 +22,12 @@ const register = async (req = request, res = response) => {
         const user = new User({firstname, lastname, location, email, password});
         user.avatar = avatar;
         // console.log(user);
+
+        //CUANDO UN USUARIO SE REGISTRA, SE CREA UN CARRITO
+        //QUE LE PERTENECE
+        const cart = new Cart({user_email: user.email});
+        await cart.save();
+
 
         // const salt = bcryptjs.genSalt();
         // user.password = bcryptjs.hash(password, salt);

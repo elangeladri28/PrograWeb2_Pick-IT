@@ -29,6 +29,7 @@ class Server{
 
     routes(){
         this.app.use('/users', require('../routes/users.routes.js'));
+        this.app.use('/products', require('../routes/product.routes.js'));
         this.app.use('/carts', require('../routes/carts.routes.js'));
     }
 
