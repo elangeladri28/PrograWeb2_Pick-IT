@@ -42,6 +42,7 @@ const register = async (req = request, res = response) => {
         });
 
     } catch (err) {
+        console.log(err);
         res.status(500).json({ errorENDPOINT: err });
     }
 }
