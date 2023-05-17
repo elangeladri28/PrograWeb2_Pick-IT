@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../db/config');
+const path = require('path');
 
 class Server{
     constructor(){
@@ -25,6 +26,7 @@ class Server{
     middlewares(){
         this.app.use(cors());
         this.app.use( express.json() );
+        this.app.use(express.static(path.join(__dirname, '/../uploads')));
     }
 
     routes(){
