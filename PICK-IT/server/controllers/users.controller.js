@@ -16,7 +16,7 @@ const register = async (req = request, res = response) => {
                 msg:"Este correo ya existe"
             });
 
-        const { firstname, lastname, location, email, password } = req.body;
+        const { firstname, lastname, location, email, password, } = req.body;
         const { avatar } = req;
         //GENERA EL MODELO DE MONGO
         const user = new User({firstname, lastname, location, email, password});
@@ -73,7 +73,7 @@ const login = async (req = request, res = response) => {
 
         const token = await generarJWT(user.id);
 
-        res.json({
+        res.status(200).json({
             user,
             token
         });

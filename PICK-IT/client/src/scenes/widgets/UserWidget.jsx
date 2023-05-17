@@ -15,8 +15,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
-    //const [user, setUser] = useState(null);
-    const user = "userId";
+    const user = useSelector((state) => state.user);
+
+    const [editNames, setEditNames] = useState(true);
+    const handleNames = () => {
+        setEditNames(!editNames);
+    };
+    const [editAdress, setAdress] = useState(true);
+    const handleAdress = () => {
+        setAdress(!editAdress);
+    };
+    const [editEmail, setEmail] = useState(true);
+    const handleEmail = () => {
+        setEmail(!editEmail);
+    };
+    const [editPassword, setPassword] = useState(true);
+    const handlePassword = () => {
+        setPassword(!editPassword);
+    };
     const { palette } = useTheme();
     const navigate = useNavigate();
     const token = useSelector((state) => state.token);
@@ -24,13 +40,7 @@ const UserWidget = ({ userId, picturePath }) => {
     const medium = palette.neutral.medium;
     const main = palette.neutral.main;
 
-    const {
-        firstName = "Jesús",
-        lastName = "Ortíz",
-        location = "Monterrey, Nuevo Leon",
-        email = "jesusortiz@gmail.com",
-        password = "1234",
-    } = user;
+    //console.log(user);
 
     return (
         <Formik>
@@ -48,9 +58,9 @@ const UserWidget = ({ userId, picturePath }) => {
                     <form>
                         {/* FOTO Y NOMBRE */}
                         <Box display="flex" justifyContent="center" pb="1rem"
-                        onClick={() => navigate(`/profile/${userId}`)}
+                        onClick={() => navigate(`/profile/${user._id}`)}
                         >
-                        <UserImage image={picturePath} size={"250px"} />
+                        <UserImage image={user.avatar} size={"250px"} />
                         </Box>
 
                         <Divider />
@@ -64,11 +74,11 @@ const UserWidget = ({ userId, picturePath }) => {
                                 <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
                                     <BadgeOutlined fontSize="large" sx={{ color: main }} />
                                     <TextField
-                                        disabled
+                                        disabled={editNames}
                                         label="Nombre(s)"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={firstName}
+                                        value={user.firstname}
                                         name="firstName"
                                         error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                                         helperText={touched.firstName && errors.firstName}
@@ -76,11 +86,11 @@ const UserWidget = ({ userId, picturePath }) => {
                                         
                                     />
                                     <TextField
-                                        disabled
+                                        disabled={editNames}
                                         label="Apellidos"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={lastName}
+                                        value={user.lastname}
                                         name="lastName"
                                         error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                                         helperText={touched.lastName && errors.lastName}
@@ -89,7 +99,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                 </Box>
                                 </Box>
                             </FlexBetween>
-                            <IconButton>
+                            <IconButton onClick={handleNames}>
                                 <EditOutlined sx={{ color: main }} />
                             </IconButton>
                         </FlexBetween>
@@ -103,11 +113,11 @@ const UserWidget = ({ userId, picturePath }) => {
                                     <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
                                         <LocationOnOutlined fontSize="large" sx={{ color: main }} />
                                         <TextField
-                                        disabled
+                                        disabled={editAdress}
                                         label="Domicilio"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={location}
+                                        value={user.location}
                                         name="location"
                                         error={Boolean(touched.location) && Boolean(errors.location)}
                                         helperText={touched.location && errors.location}
@@ -117,7 +127,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                     </Box>
                                 </Box>
                             </FlexBetween>
-                            <IconButton>
+                            <IconButton onClick={handleAdress}>
                                 <EditOutlined sx={{ color: main }} />
                             </IconButton>
                         </FlexBetween>
@@ -132,11 +142,11 @@ const UserWidget = ({ userId, picturePath }) => {
                                     <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
                                         <EmailOutlined fontSize="large" sx={{ color: main }} />
                                         <TextField
-                                        disabled
+                                        disabled={editEmail}
                                         label="Email"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={email}
+                                        value={user.email}
                                         name="email"
                                         error={Boolean(touched.email) && Boolean(errors.email)}
                                         helperText={touched.email && errors.email}
@@ -146,7 +156,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                     </Box>
                                 </Box>
                             </FlexBetween>
-                            <IconButton>
+                            <IconButton onClick={handleEmail}>
                                 <EditOutlined sx={{ color: main }} />
                             </IconButton>
                         </FlexBetween>
@@ -159,12 +169,12 @@ const UserWidget = ({ userId, picturePath }) => {
                                     <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
                                         <KeyOutlined fontSize="large" sx={{ color: main }} />
                                         <TextField
-                                        disabled
+                                        disabled={editPassword}
                                         label="Password"
                                         type="password"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={password}
+                                        value={user.password}
                                         name="password"
                                         error={Boolean(touched.password) && Boolean(errors.password)}
                                         helperText={touched.password && errors.password}
@@ -174,7 +184,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                     </Box>
                                 </Box>
                             </FlexBetween>
-                            <IconButton>
+                            <IconButton onClick={handlePassword}>
                                 <EditOutlined sx={{ color: main }} />
                             </IconButton>
                         </FlexBetween>
