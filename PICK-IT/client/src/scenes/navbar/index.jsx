@@ -36,7 +36,7 @@ const Navbar = () => {
     var fullName =  null;
     
     if(user !== null){
-        console.log(user);
+        //console.log(user);
         fullName = `${user.firstname} ${user.lastname}`;
         isLogged = true;
     }

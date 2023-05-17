@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Typography, Divider, Button, useTheme, IconButton, TextField, DialogContent } from "@mui/material";
 import { Formik } from "formik";
+import * as yup from "yup";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -15,7 +16,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
-    const user = useSelector((state) => state.user);
+    //const user = useSelector((state) => state.user);
+
+    const [user, setUser] = useState(useSelector((state) => state.user));
+    const handleUser = (property, value) => {
+        setUser(prev => ({
+            ...prev,
+            [property]:value 
+        }));
+    };
+    useEffect(() => {
+        //console.log(user);
+    }, [user]);
 
     const [editNames, setEditNames] = useState(true);
     const handleNames = () => {
@@ -40,10 +52,43 @@ const UserWidget = ({ userId, picturePath }) => {
     const medium = palette.neutral.medium;
     const main = palette.neutral.main;
 
+
+    const updateSchema = yup.object().shape({
+        firstname: yup.string().required("required"),
+        lastname: yup.string().required("required"),
+        email: yup.string().email("invalid email").required("required"),
+        password: yup.string().required("required"),
+        location: yup.string().required("required"),
+        picture: yup.string().required("required"),
+      });
+
     //console.log(user);
+    const update = async (values, onSubmitProps) => {
+        const formData = new FormData();
+        for (let value in values) {
+          formData.append(value, values[value])
+        }
+    
+        console.log(values);
+        const savedUserResponse = await fetch("http://localhost:8080/users/" + user._id,
+          {
+            method: "PUT",
+            headers: {xtkn: token},
+            body: formData,
+          }
+        );
+    
+        const savedUser = await savedUserResponse.json();
+        onSubmitProps.resetForm();
+      };
+
 
     return (
-        <Formik>
+        <Formik
+            onSubmit={update}
+            initialValues={user}
+            validationSchema={updateSchema}
+        >
             {({
                 values,
                 errors,
@@ -60,7 +105,7 @@ const UserWidget = ({ userId, picturePath }) => {
                         <Box display="flex" justifyContent="center" pb="1rem"
                         onClick={() => navigate(`/profile/${user._id}`)}
                         >
-                        <UserImage image={user.avatar} size={"250px"} />
+                        <UserImage image={"http://localhost:8080/" + user.avatar} size={"250px"} />
                         </Box>
 
                         <Divider />
@@ -77,7 +122,7 @@ const UserWidget = ({ userId, picturePath }) => {
                                         disabled={editNames}
                                         label="Nombre(s)"
                                         onBlur={handleBlur}
-                                        onChange={handleChange}
+                                        onChange={(e) => handleUser("firstname", e.target.value)}
                                         value={user.firstname}
                                         name="firstName"
                                         error={Boolean(touched.lastName) && Boolean(errors.lastName)}
