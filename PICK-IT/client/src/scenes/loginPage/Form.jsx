@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import { CListGroup } from "@coreui/react";
 
 const registerSchema = yup.object().shape({
   firstname: yup.string().required("required"),
