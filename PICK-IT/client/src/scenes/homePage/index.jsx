@@ -4,29 +4,14 @@ import ProductWidget from "scenes/widgets/ProductWidget";
 import ProductCarousel from "components/ProductCarousel";
 import { useEffect, useState } from "react";
 
-// const getProducts = async () => {
-//   const getAll = await fetch("http://localhost:8080/products/getAll",
-//       {
-//           method: "GET",
-//       }
-//   );
-//   const products = await getAll.json();
-
-//   if (products){
-//       //console.log(products);
-//   }
-// };
-
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  //const { _id, picturePath } = useSelector((state) => state.user);
 
   const [productos, setProductos] = useState(null);
-
   var productComp = [];
 
   useEffect(()=> {
-    fetch("https://fakestoreapi.com/products?limit=5")
+    fetch("https://fakestoreapi.com/products?limit=10")
     .then((res) => res.json())
     .then((product) => {
       setProductos(product);

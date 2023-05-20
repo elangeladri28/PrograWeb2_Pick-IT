@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,10 +6,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Typography, useTheme, Box } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import Deleteicon from "components/Deleteicon";
 import SelectCantidad from "components/SelectCantidad";
 import Select from '@mui/material/Select';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,51 +33,53 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(Img, Producto, Cantidad, Precio, Estado) {
-  return { Img, Producto, Cantidad, Precio, Estado };
-}
-
-const rows = [
-  createData( <img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad><Select>value={2}</Select></SelectCantidad>, 100, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 200, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 200, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 100, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 500, <Deleteicon/>)
-];
-
 export default function CustomizedTables() {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
+
+  //const [user, setUser] = useState(useSelector((state) => state.user));
+  const token = useSelector((state) => state.token);
+  const [prodsCar, setProdsCar] = useState(null);
+  var prodsCarComp = [];
+  //const [itemsCar, setItemsCar] = useState(null);
+  
+  useEffect(() => {
+    const getItemsCar = async () => {
+      //const getItemsCarRes = await fetch("http://localhost:8080/carts/get",
+      const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
+        {
+          method: "GET",
+          headers: { xtkn: token },
+        }
+      );
+  
+      const itemsCar = await getItemsCarRes.json();
+      if (itemsCar) {
+        console.log(itemsCar);
+        setProdsCar(itemsCar);
+      }
+    };
+
+    getItemsCar().catch(console.error);
+  }, [token]); 
+
+  if (prodsCar) {
+    prodsCar.forEach(e => {
+      prodsCarComp.push(
+        <StyledTableRow key={e.id}>
+              <StyledTableCell>
+              <img width="30%" height="30%" alt="advert" src={e.image} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}/>
+              </StyledTableCell>
+              <StyledTableCell component="th" scope="row">
+                {e.title}
+              </StyledTableCell>
+              <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell>
+              <StyledTableCell align="right"> ${e.price} </StyledTableCell>
+              <StyledTableCell align="right"> <Deleteicon/> </StyledTableCell>
+            </StyledTableRow>
+      );
+    });
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -113,19 +116,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.Producto}>
-              <StyledTableCell>
-                {row.Img}
-              </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
-                {row.Producto}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.Cantidad}</StyledTableCell>
-              <StyledTableCell align="right">{row.Precio}</StyledTableCell>
-              <StyledTableCell align="right">{row.Estado}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {prodsCarComp}
         </TableBody>
       </Table>
     </TableContainer>

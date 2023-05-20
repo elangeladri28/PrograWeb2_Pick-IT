@@ -1,6 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-//import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import ProductWidget from "scenes/widgets/ProductWidget";
@@ -8,15 +7,12 @@ import ProductDetailWidget from "scenes/widgets/ProductDetailWidget";
 //import ProductImage from "components/ProductImage";
 //import CommentWidget from "scenes/widgets/CommentWidget";
 
-
-
 const ProductPage = () => {
   const { productId } = useParams();
   const [producto, setProducto] = useState(null);
   var prodMostrado = null;
   var prodDetail = null;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  //console.log(productId);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products/" + productId)

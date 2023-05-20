@@ -1,9 +1,6 @@
-import { CCarousel, CCarouselItem, CImage} from "@coreui/react";
 import '@coreui/coreui/dist/css/coreui.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Carousel from 'react-bootstrap/Carousel';
-import { height } from "@mui/system";
 
 function UncontrolledExample() {
   return (

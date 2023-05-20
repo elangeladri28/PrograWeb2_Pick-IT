@@ -1,7 +1,11 @@
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 import { Typography, useTheme, Box, Divider, Grid, Button } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
+import { useSelector } from 'react-redux';
+import SnackWidget from './SnackWidget';
+import { useState } from 'react';
 //import { useNavigate } from "react-router-dom";
+
 
 const ProductDetailWidget = ({props}) => {
     const { palette } = useTheme();
@@ -10,8 +14,51 @@ const ProductDetailWidget = ({props}) => {
     const main = palette.neutral.main;
     const medium = palette.neutral.medium;
 
+    const token = useSelector((state) => state.token);
+    const [snack, setSnack] = useState({open: false, type: 'info', message: ''});
+    const OnSnackClose = ()=>{
+        setSnack({...snack, open: false});
+    }
+
+    const addPCar = async () => {
+        const formData = new FormData();
+        formData.append("productId", props.id);
+        
+        console.log(formData);
+        const prodAddcarRes = await fetch("http://localhost:8080/carts/add",
+            {
+                method: "POST",
+                headers: { xtkn: token },
+                body: formData,
+            }
+        );
+    
+        const prodAddcar = await prodAddcarRes.json();
+        if (prodAddcar){
+            setSnack({open: true, type: 'success', message:'Producto añadido al carrito de compras.'});
+        } else {
+            setSnack({open: true, type: 'error', message:'Algo salió mal :/'});
+        }
+    };
+    
+    const handleSubmit = ({type = "error"}) => {
+        
+        if (token) {
+            if (type === "car")
+                addPCar();
+            if (type === "wish")
+                setSnack({open: true, type: 'success', message:'Producto añadido al tu wishlist'});
+        }
+    }
+
     return (
         <Box>
+            <SnackWidget 
+            open={snack.open} 
+            type={snack.type}
+            message={snack.message}
+            handleClose={OnSnackClose}
+            />
             <FlexBetween p="1rem 0">
                 <Typography color={dark} variant="h1" fontWeight="700"> {props.title}</Typography>
                 <Typography color={main} variant="h1" fontWeight="500"> ${props.price} </Typography>
@@ -64,6 +111,7 @@ const ProductDetailWidget = ({props}) => {
                 <Button
                     fullWidth
                     type="submit"
+                    onClick={() =>handleSubmit({type: "car"})}
                     sx={{
                         m: "1rem 0 0",
                         backgroundColor: palette.primary.main,
@@ -79,6 +127,7 @@ const ProductDetailWidget = ({props}) => {
                 <Button
                     fullWidth
                     type="submit"
+                    onClick={()=>handleSubmit({type: "wish"})}
                     sx={{
                         m: "1rem 0 0",
                         backgroundColor: main,
