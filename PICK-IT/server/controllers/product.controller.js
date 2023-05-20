@@ -2,6 +2,7 @@ const { request, response } = require('express');
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model.js');
 const fs = require('fs');
+const { constants } = require('buffer');
 
 const addProduct = async (req = request, res = response) => {
 
@@ -50,7 +51,51 @@ const getAll = async(req = request, res = response) => {
     }
 }
 
+const get = async(req = request, res = response) => {
+    try {
+        const {prod_id} = req.params;
+        console.log(prod_id);
+        const product = await Product.findById(prod_id)
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({error:error});
+    }
+}
+
+const getByCategory = async (req = request, res = response) => {
+	try{
+		const {cat_name} = req.params;
+		const product = await Product.find({product_category:cat_name});
+		console.log(cat_name);
+		res.status(200).json(product);
+
+	}catch(error){
+		console.log(error);
+		res.status(500).json({error});
+	}
+}
+
+const getByName = async(req = request, res = response) => {
+		try{
+			const {product_name} = req.params;
+			const product = await Product.find({product_name});
+			res.send(product);
+		}catch(error){
+			console.log(error);
+			res.status(500).json({error});
+		}
+}
+
 module.exports = {
     addProduct,
-    getAll
+    getAll,
+    get,
+	getByCategory,
+	getByName
 }
+
+
+//MANERAS DE OBTENER UN PRODUCTO
+//GET POR ID
+//GET POR NOMBRE
+//GET POR CATEGORIA
