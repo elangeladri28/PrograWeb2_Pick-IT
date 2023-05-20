@@ -9,7 +9,7 @@ import { Box, Divider, Button, useTheme, IconButton, TextField} from "@mui/mater
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
-import ModalWidget from "./ModalWidget";
+import SnackWidget from "./SnackWidget";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogin } from "state";
 import { useState } from "react";
@@ -106,7 +106,7 @@ const UserWidget = () => {
     return (
         
         <WidgetWrapper>
-            <ModalWidget 
+            <SnackWidget 
             open={snack.open} 
             type={snack.type}
             message={snack.message}

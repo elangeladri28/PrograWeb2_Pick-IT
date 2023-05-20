@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-import { NavigationOutlined } from '@mui/icons-material';
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -28,7 +27,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" /> } />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/product" element={<ProductPage />} />
+            <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
             <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
           </Routes>

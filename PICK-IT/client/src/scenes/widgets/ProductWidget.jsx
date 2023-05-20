@@ -1,12 +1,18 @@
-import { AddBoxSharp } from "@mui/icons-material";
 import { Typography, useTheme, Box } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useNavigate } from "react-router-dom";
 
-
-
-const ProductWidget = () => {
+const ProductWidget = ({
+  id = "0",
+  nombre = "AMD Radeon RX 6600 ZT", 
+  marca = "AMD",
+  proveedor = "amd.com",
+  descripcion = "La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2, nació para ofrecerte la mejor experiencia de juego en 1080p.",
+  categoria = "Tarjetas gráficas",
+  precio = "$5,500" ,
+  imagen = "../assets/amd-radeon-rx-6600-xt.webp",
+}) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const dark = palette.neutral.dark;
@@ -17,9 +23,9 @@ const ProductWidget = () => {
     <WidgetWrapper margin="1rem">
       <FlexBetween>
         <Typography color={dark} variant="h5" fontWeight="500">
-          AMD Radeon RX 6600 ZT
+          {nombre}
         </Typography>
-        <Typography color={medium} onClick={() => navigate("/product")}
+        <Typography color={medium} onClick={() => navigate("/product/" + id)}
           sx={{
             "&:hover": {
               color: main,
@@ -31,17 +37,14 @@ const ProductWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="../assets/amd-radeon-rx-6600-xt.webp"
+        src={imagen}
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>AMD</Typography>
-        <Typography color={medium}>amd.com</Typography>
+        <Typography color={main}> {marca} </Typography>
+        <Typography color={medium}> {proveedor} </Typography>
       </FlexBetween>
-      <Typography color={medium} m="0.5rem 0">
-        La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2,
-        nació para ofrecerte la mejor experiencia de juego en 1080p.
-      </Typography>
+      <Typography color={medium} m="0.5rem 0"> {descripcion} </Typography>
     </WidgetWrapper>
   );
 };

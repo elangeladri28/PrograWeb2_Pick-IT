@@ -1,12 +1,11 @@
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 import { Typography, useTheme, Box, Divider, Grid, Button } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
-const ProductDetailWidget = () => {
+const ProductDetailWidget = ({props}) => {
     const { palette } = useTheme();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const dark = palette.neutral.dark;
     const main = palette.neutral.main;
     const medium = palette.neutral.medium;
@@ -14,18 +13,15 @@ const ProductDetailWidget = () => {
     return (
         <Box>
             <FlexBetween p="1rem 0">
-                <Typography color={dark} variant="h1" fontWeight="700"> AMD Radeon RX 6600 ZT </Typography>
-                <Typography color={main} variant="h1" fontWeight="500"> $5,500 </Typography>
+                <Typography color={dark} variant="h1" fontWeight="700"> {props.title}</Typography>
+                <Typography color={main} variant="h1" fontWeight="500"> ${props.price} </Typography>
             </FlexBetween>
 
             <Divider />
 
             <Box p="1rem 0">
                 <Typography color={main} variant="h3"> Descripción </Typography>
-                <Typography color={medium} variant="h4" m="0.5rem 0">
-                    La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2,
-                    nació para ofrecerte la mejor experiencia de juego en 1080p.
-                </Typography>
+                <Typography color={medium} variant="h4" m="0.5rem 0"> {props.description} </Typography>
             </Box>
 
             <Divider />
@@ -61,7 +57,7 @@ const ProductDetailWidget = () => {
 
             <FlexBetween p="1rem 0">
                 <Typography color={main}>AMD</Typography>
-                <Typography color={medium}>amd.com</Typography>
+                <Typography color={medium}> {props.category} </Typography>
             </FlexBetween>
 
             <Box>
