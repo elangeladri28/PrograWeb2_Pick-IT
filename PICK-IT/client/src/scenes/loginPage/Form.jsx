@@ -13,9 +13,10 @@ const registerSchema = yup.object().shape({
   firstname: yup.string().required("required"),
   lastname: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
+  password: yup.string().required("required").min(8, 'Tiene que tener un mínimo de 8 cáracteres').matches(/^((?=.+[A-Za-z])(?=.+\d)(?=.+[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,})$/, 
+  {message: 'Debe de contener mínimo un cáracter en mayusculas, un cáracter especial y un número.'}),
   location: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  avatar: yup.string().required("required"),
 });
 
 const loginSchema = yup.object().shape({
@@ -29,7 +30,7 @@ const initialValuesRegister = {
   email: "",
   password: "",
   location: "",
-  picture: "",
+  avatar: "",
 };
 
 const initialValuesLogin = {
@@ -52,14 +53,13 @@ const Form = () => {
     for (let value in values) {
       formData.append(value, values[value])
     }
-    formData.append('picturePath', values.picture.name);
+    //formData.append('avatar', values.avatar);
 
     console.log(values);
     const savedUserResponse = await fetch("http://localhost:8080/users/register",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: formData,
       }
     );
 
@@ -72,7 +72,6 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    //console.log(values);
     const loggedInResponse = await fetch("http://localhost:8080/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -80,13 +79,18 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
+
     if (loggedIn) {
       dispatch(
-        setLogin({user: loggedIn})
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token})
       );
+      if (!loggedIn.msg)
         navigate("/");
       console.log(loggedIn);
     }
+    
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
@@ -163,7 +167,7 @@ const Form = () => {
                     acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
                     onDrop={(acceptedFiles) =>
-                      setFieldValue("picture", acceptedFiles[0])
+                      setFieldValue("avatar", acceptedFiles[0])
                     }
                   >
                     {({ getRootProps, getInputProps }) => (
@@ -174,11 +178,11 @@ const Form = () => {
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
                         <input {...getInputProps()} />
-                        {!values.picture ? (
+                        {!values.avatar ? (
                           <p>Agrega una foto de perfil aquí</p>
                         ) : (
                           <FlexBetween>
-                            <Typography>{values.picture.name}</Typography>
+                            <Typography>{values.avatar.name}</Typography>
                             <EditOutlinedIcon />
                           </FlexBetween>
                         )}

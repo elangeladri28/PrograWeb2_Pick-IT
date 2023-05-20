@@ -1,15 +1,39 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import ProductWidget from "scenes/widgets/ProductWidget";
 import ProductDetailWidget from "scenes/widgets/ProductDetailWidget";
-import ProductImage from "components/ProductImage";
-import CommentWidget from "scenes/widgets/CommentWidget";
+//import ProductImage from "components/ProductImage";
+//import CommentWidget from "scenes/widgets/CommentWidget";
+
+
 
 const ProductPage = () => {
+  const { productId } = useParams();
+  const [producto, setProducto] = useState(null);
+  var prodMostrado = null;
+  var prodDetail = null;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  //console.log(productId);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products/" + productId)
+      .then((res) => res.json())
+      .then((product) => {
+        setProducto(product);
+      });
+  }, [productId])
+
+  if (producto){
+    prodMostrado = <ProductWidget key={producto.id} id={producto.id} 
+    nombre={producto.title} categoria={producto.category} descripcion={producto.description}
+    precio={producto.price} imagen={producto.image}
+    />;
+
+    prodDetail = <ProductDetailWidget props={producto}/>
+  }
 
   return (
     <Box>
@@ -22,17 +46,16 @@ const ProductPage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "50%" : undefined}>
-          <ProductWidget />
-          <ProductImage />
+          {prodMostrado}
         </Box>
         <Box flexBasis={isNonMobileScreens ? "50%" : undefined}>
-          <ProductDetailWidget />
+          {prodDetail}
         </Box>
 
 
       </Box>
       
-      <CommentWidget />
+      {/* <CommentWidget /> */}
       
     </Box>
   );

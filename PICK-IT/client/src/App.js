@@ -25,11 +25,11 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile/:userId" element={<ProfilePage />} />
+            <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" /> } />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/product" element={<ProductPage />} />
-            <Route path="/whishlist" element={<WishlistPage />} />
-            <Route path="/shoppingcart" element={<ShoppingCart/>} />
+            <Route path="/product/:productId" element={<ProductPage />} />
+            <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
+            <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

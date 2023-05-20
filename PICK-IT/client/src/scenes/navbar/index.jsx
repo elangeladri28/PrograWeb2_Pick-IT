@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   IconButton,
   InputBase,
   Typography,
@@ -9,7 +8,6 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
-  Drawer,
 } from "@mui/material";
 import {
   Search,
@@ -17,12 +15,11 @@ import {
   DarkMode,
   LightMode,
   Menu,
-  Close,
   Person,
   ShoppingBag,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout, setShoppingCart } from "state";
+import { setMode, setLogout, /*setShoppingCart*/ } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import ShoppingCartWidget from "scenes/widgets/ShoppingCartWidget";
@@ -35,7 +32,8 @@ const Navbar = () => {
     var isLogged = false;
     var fullName =  null;
     
-    if(user.email !== undefined){
+    if(user !== null){
+        //console.log(user);
         fullName = `${user.firstname} ${user.lastname}`;
         isLogged = true;
     }
@@ -45,12 +43,9 @@ const Navbar = () => {
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
-    const background = theme.palette.background.default;
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
 
-
-    
 
     const [state, setState] = useState({
         right:false,
@@ -136,10 +131,10 @@ const Navbar = () => {
                             }}
                             input={<InputBase />}
                         >
-                            <MenuItem onClick={() => navigate("/profile/userId")} value={fullName}>
+                            <MenuItem onClick={() => navigate("/profile/" + user._id)} value={fullName}>
                                 <Typography>{fullName}</Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => navigate("/login")/*</Select>dispatch(setLogout())*/}>Cerrar Sesión</MenuItem>
+                            <MenuItem onClick={() => dispatch(setLogout())}>Cerrar Sesión</MenuItem>
                         </Select>
                     </FormControl>
                     )}
@@ -150,78 +145,6 @@ const Navbar = () => {
                 >
                     <Menu />
                 </IconButton>
-            )}
-
-            {/* MOBILE NAV */}
-            {!isNonMobileScreens && isMobileMenuToggled && (
-                <Box
-                    position="fixed"
-                    right="0"
-                    bottom="0"
-                    height="100%"
-                    zIndex="10"
-                    maxWidth="500px"
-                    minWidth="300px"
-                    backgroundColor={background}
-                >
-                    {/* CLOSE ICON */}
-                    <Box display="flex" justifyContent="flex-end" p="1rem">
-                        <IconButton
-                            onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
-                        >
-                            <Close />
-                        </IconButton>
-                    </Box>
-
-                    {/* MENU ITEMS */}
-                    <FlexBetween
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        gap="3rem"
-                    >
-                        <IconButton
-                            onClick={() => dispatch(setMode())}
-                            sx={{ fontSize: "25px" }}
-                        >
-                            {theme.palette.mode === "dark" ? (
-                                <DarkMode sx={{ fontSize: "25px" }} />
-                            ) : (
-                                <LightMode sx={{ color: dark, fontSize: "25px" }} />
-                            )}
-                        </IconButton>
-                        <ShoppingCart sx={{ fontSize: "25px" }} />
-                        <ShoppingBag sx={{ fontSize: "25px" }} />
-                        
-                        <FormControl variant="standard" value={fullName}>
-                            <Select
-                                value={fullName}
-                                sx={{
-                                    backgroundColor: neutralLight,
-                                    width: "150px",
-                                    borderRadius: "0.25rem",
-                                    p: "0.25rem 1rem",
-                                    "& .MuiSvgIcon-root": {
-                                        pr: "0.25rem",
-                                        width: "3rem",
-                                    },
-                                    "& .MuiSelect-select:focus": {
-                                        backgroundColor: neutralLight,
-                                    },
-                                }}
-                                input={<InputBase />}
-                            >
-                                <MenuItem value={fullName}>
-                                    <Typography>{fullName}</Typography>
-                                </MenuItem>
-                                <MenuItem onClick={() => dispatch(setLogout())}>
-                                    Log Out
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-                    </FlexBetween>
-                </Box>
             )}
 
         </FlexBetween>
