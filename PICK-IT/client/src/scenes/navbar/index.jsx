@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   IconButton,
   InputBase,
   Typography,
@@ -9,7 +8,6 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
-  Drawer,
 } from "@mui/material";
 import {
   Search,
@@ -17,12 +15,11 @@ import {
   DarkMode,
   LightMode,
   Menu,
-  Close,
   Person,
   ShoppingBag,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout, setShoppingCart } from "state";
+import { setMode, setLogout, /*setShoppingCart*/ } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import ShoppingCartWidget from "scenes/widgets/ShoppingCartWidget";
@@ -46,12 +43,9 @@ const Navbar = () => {
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
-    const background = theme.palette.background.default;
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
 
-
-    
 
     const [state, setState] = useState({
         right:false,
@@ -137,7 +131,7 @@ const Navbar = () => {
                             }}
                             input={<InputBase />}
                         >
-                            <MenuItem onClick={() => navigate("/profile/userId")} value={fullName}>
+                            <MenuItem onClick={() => navigate("/profile/" + user._id)} value={fullName}>
                                 <Typography>{fullName}</Typography>
                             </MenuItem>
                             <MenuItem onClick={() => dispatch(setLogout())}>Cerrar Sesión</MenuItem>

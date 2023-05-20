@@ -13,7 +13,8 @@ const registerSchema = yup.object().shape({
   firstname: yup.string().required("required"),
   lastname: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
+  password: yup.string().required("required").min(8, 'Tiene que tener un mínimo de 8 cáracteres').matches(/^((?=.+[A-Za-z])(?=.+\d)(?=.+[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,})$/, 
+  {message: 'Debe de contener mínimo un cáracter en mayusculas, un cáracter especial y un número.'}),
   location: yup.string().required("required"),
   avatar: yup.string().required("required"),
 });

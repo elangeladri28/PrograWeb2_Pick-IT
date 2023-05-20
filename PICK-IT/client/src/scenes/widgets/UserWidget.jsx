@@ -9,6 +9,7 @@ import { Box, Divider, Button, useTheme, IconButton, TextField} from "@mui/mater
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import ModalWidget from "./ModalWidget";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogin } from "state";
 import { useState } from "react";
@@ -23,6 +24,38 @@ const UserWidget = () => {
         obj[e.target.name] = e.target.value;
         const nuevoObj = {...user, ...obj};
         setUser(nuevoObj);
+    };
+
+    const validateUser = (user) =>{
+        let regex = /^[a-zA-Z\u00C0-\u017F\s]+$/;
+        let firstN = regex.test(user.firstname);
+        let lastN = regex.test(user.lastname);
+        regex = /^[\w]+@([\w-]+\.)+[\w-]{2,4}$/;
+        let email = regex.test(user.email);
+        regex = /^((?=.+[A-Za-z])(?=.+\d)(?=.+[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,})$/;
+        let pass = regex.test(user.password);
+
+        if (firstN && lastN && email && pass)
+            return true;
+        else 
+            return false;
+    }
+    
+    const [snack, setSnack] = useState({open: false, type: 'info', message: ''});
+    const OnSnackClose = ()=>{
+        setSnack({...snack, open: false});
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateUser(user)) {
+            setSnack({open: true, type: 'success', message:'Perfil actualizado exitosamente.'});
+            console.log("Datos correctos.");
+            update();
+        } else {
+            setSnack({open: true, type: 'error', message:'Datos incorrectos.'});
+            console.log("Datos incorrectos.");
+        }
     };
 
     const [editNames, setEditNames] = useState(true);
@@ -47,13 +80,11 @@ const UserWidget = () => {
     const main = palette.neutral.main;
 
     const update = async () => {
-        //console.log(user);
-
         const formData = new FormData();
         for (const [key, value] of Object.entries(user)) {
             formData.append(key, value);
         }
-
+        //console.log(user);
         const savedUserResponse = await fetch("http://localhost:8080/users/" + user._id,
             {
                 method: "PUT",
@@ -73,9 +104,15 @@ const UserWidget = () => {
     };
 
     return (
-
+        
         <WidgetWrapper>
-            <div >
+            <ModalWidget 
+            open={snack.open} 
+            type={snack.type}
+            message={snack.message}
+            handleClose={OnSnackClose}
+            />
+            <Box component="form" onSubmit={handleSubmit} >
                 {/* FOTO Y NOMBRE */}
                 <Box display="flex" justifyContent="center" pb="1rem"
                     onClick={() => navigate(`/profile/${user._id}`)}
@@ -197,7 +234,8 @@ const UserWidget = () => {
 
                 <Box display="flex" justifyContent="flex-end">
                     <Button
-                        onClick={()=>update()}
+                        type="submit"
+                        //onClick={()=>update()}
                         sx={{
                             m: "1rem 0",
                             backgroundColor: palette.primary.main,
@@ -208,7 +246,7 @@ const UserWidget = () => {
                         Guardar
                     </Button>
                 </Box>
-            </div>
+            </Box>
         </WidgetWrapper>
     );
 };

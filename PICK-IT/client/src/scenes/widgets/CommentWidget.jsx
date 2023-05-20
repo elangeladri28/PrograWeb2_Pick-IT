@@ -1,11 +1,10 @@
-import { Typography, useTheme, Box, Button, Card, CardActions, CardContent, Grid } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
+import { Typography, useTheme, Box, Card, CardContent } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 const CommentWidget = () => {
     const { palette } = useTheme();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const dark = palette.neutral.dark;
     const main = palette.neutral.main;
     const medium = palette.neutral.medium;
