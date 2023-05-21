@@ -3,8 +3,7 @@ const { Schema, model } = require('mongoose');
 const WishlistSchema = Schema({
 	user_email:{
 		type:String,
-		required: true,
-		unique: true
+		required: true
 	},
 	wishlist_name:{
 		type:String,
