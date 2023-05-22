@@ -37,7 +37,6 @@ export default function CustomizedTables() {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
 
-  //const [user, setUser] = useState(useSelector((state) => state.user));
   const token = useSelector((state) => state.token);
   const [prodsCar, setProdsCar] = useState(null);
   var prodsCarComp = [];
@@ -63,6 +62,26 @@ export default function CustomizedTables() {
     getItemsCar().catch(console.error);
   }, [token]); 
 
+  const delItemfromCar = async (productID, cartID) => {
+    const formData = new FormData();
+    formData.append("cartId", cartID);
+    
+    const deleteWLRes = await fetch("http://localhost:8080/carts/delete",
+        {
+            method: "DELETE",
+            headers: { xtkn: token },
+            body: formData,
+        }
+    );
+
+    const deleteWL = await deleteWLRes.json();
+    if (deleteWL){
+        console.log("Producto elimnado del carrito: " + productID);
+    } else {
+      console.log("No existe endpoint para eliminar producto del carrito.");
+    }
+};
+
   if (prodsCar) {
     prodsCar.carts.forEach(e => {
       prodsCarComp.push(
@@ -75,7 +94,7 @@ export default function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell>
               <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-              <StyledTableCell align="right"> <Deleteicon/> </StyledTableCell>
+              <StyledTableCell align="right" onClick={()=>delItemfromCar(e.product_id._id, e._id)}> <Deleteicon /> </StyledTableCell>
             </StyledTableRow>
       );
     });

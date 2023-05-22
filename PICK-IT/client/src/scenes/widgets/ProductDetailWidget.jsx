@@ -5,7 +5,6 @@ import SnackWidget from './SnackWidget';
 import { useEffect, useState } from 'react';
 //import { useNavigate } from "react-router-dom";
 
-
 const ProductDetailWidget = ({ props }) => {
     const { palette } = useTheme();
     //const navigate = useNavigate();
@@ -73,7 +72,7 @@ const ProductDetailWidget = ({ props }) => {
         formData.append("productId", props._id);
         formData.append("wishlistId", WL_id);
 
-        console.log(props._id);
+        //console.log(props._id);
         const prodAddWishRes = await fetch("http://localhost:8080/wishlist/add",
             {
                 method: "POST",
@@ -84,7 +83,7 @@ const ProductDetailWidget = ({ props }) => {
 
         const prodAddWish = await prodAddWishRes.json();
         if (prodAddWish) {
-            setSnack({ open: true, type: 'success', message: 'Producto añadido a .' });
+            setSnack({ open: true, type: 'success', message: 'Producto añadido a su bolsa de deseos.' });
         } else {
             setSnack({ open: true, type: 'error', message: 'Algo salió mal :/' });
         }

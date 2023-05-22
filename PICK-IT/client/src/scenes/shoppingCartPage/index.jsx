@@ -25,7 +25,7 @@ const ShoppingCartPage = () => {
                 <WidgetWrapper>
                     <TableContainer />
                 </WidgetWrapper>
-                <Button variant="contained" style={{ fontSize: 20 }}>Comprar</Button>
+                <Button variant="contained" style={{ width: "100%" ,fontSize: 20 }}>Comprar</Button>
             </Box>
         </Box>
     );
