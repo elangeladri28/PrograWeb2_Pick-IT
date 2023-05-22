@@ -6,6 +6,7 @@ import SearchPage from 'scenes/searchPage';
 import ProductPage from 'scenes/productPage';
 import WishlistPage from 'scenes/wishlistPage';
 import ShoppingCart from 'scenes/shoppingCartPage';
+import ShopHistory from 'scenes/shophistory';
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -27,9 +28,16 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" /> } />
             <Route path="/search" element={<SearchPage />} />
+<<<<<<< Updated upstream
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
             <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
+=======
+            <Route path="/product" element={<ProductPage />} />
+            <Route path="/whishlist" element={<WishlistPage />} />
+            <Route path="/shoppingcart" element={<ShoppingCart/>} />
+            <Route path="/shophistory" element={<ShopHistory/>} />
+>>>>>>> Stashed changes
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

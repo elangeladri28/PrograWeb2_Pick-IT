@@ -6,7 +6,7 @@ const Products = Schema({
         required: [true, 'El nombre del producto no puede ser vacio'],
         unique: [true, 'El nombre debe se unico']
     },
-    product_descripcion:{
+    product_description:{
         type:String,
         required:[ true, 'El producto debe tener descripcion'],
     },

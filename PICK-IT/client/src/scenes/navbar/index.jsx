@@ -23,6 +23,7 @@ import { setMode, setLogout, /*setShoppingCart*/ } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import ShoppingCartWidget from "scenes/widgets/ShoppingCartWidget";
+import HistoryIcon from '@mui/icons-material/History';
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -32,11 +33,18 @@ const Navbar = () => {
     var isLogged = false;
     var fullName =  null;
     
+<<<<<<< Updated upstream
     if(user !== null){
         //console.log(user);
         fullName = `${user.firstname} ${user.lastname}`;
         isLogged = true;
     }
+=======
+    // if(user.email !== undefined){
+    //     fullName = `${user.firstname} ${user.lastname}`;
+    //     isLogged = true;
+    // }
+>>>>>>> Stashed changes
 
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
@@ -107,6 +115,9 @@ const Navbar = () => {
                     <ShoppingBag sx={{ fontSize: "25px" }} />
                     </IconButton>
                    
+                    <IconButton onClick={() => navigate("/shophistory")}>
+                    <HistoryIcon sx={{ fontSize: "25px" }} />
+                    </IconButton>
 
                     {!isLogged ? (
                         <IconButton onClick={() => navigate("/login")}>
