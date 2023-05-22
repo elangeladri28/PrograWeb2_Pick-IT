@@ -45,8 +45,8 @@ export default function CustomizedTables() {
   
   useEffect(() => {
     const getItemsCar = async () => {
-      //const getItemsCarRes = await fetch("http://localhost:8080/carts/get",
-      const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
+      const getItemsCarRes = await fetch("http://localhost:8080/carts/get",
+      //const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
         {
           method: "GET",
           headers: { xtkn: token },
@@ -64,17 +64,17 @@ export default function CustomizedTables() {
   }, [token]); 
 
   if (prodsCar) {
-    prodsCar.forEach(e => {
+    prodsCar.carts.forEach(e => {
       prodsCarComp.push(
-        <StyledTableRow key={e.id}>
+        <StyledTableRow key={e._id}>
               <StyledTableCell>
-              <img width="30%" height="30%" alt="advert" src={e.image} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}/>
+              <img width="30%" height="30%" alt="advert" src={e.product_img} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}/>
               </StyledTableCell>
               <StyledTableCell component="th" scope="row">
-                {e.title}
+                {e.product_id.product_name}
               </StyledTableCell>
               <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell>
-              <StyledTableCell align="right"> ${e.price} </StyledTableCell>
+              <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
               <StyledTableCell align="right"> <Deleteicon/> </StyledTableCell>
             </StyledTableRow>
       );
@@ -108,11 +108,9 @@ export default function CustomizedTables() {
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-                ¿Mantener?
+                
               </Typography>
             </StyledTableCell>
-
-
           </TableRow>
         </TableHead>
         <TableBody>

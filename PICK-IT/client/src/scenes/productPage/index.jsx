@@ -15,7 +15,7 @@ const ProductPage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products/" + productId)
+    fetch("http://localhost:8080/products/" + productId)
       .then((res) => res.json())
       .then((product) => {
         setProducto(product);
@@ -23,9 +23,9 @@ const ProductPage = () => {
   }, [productId])
 
   if (producto){
-    prodMostrado = <ProductWidget key={producto.id} id={producto.id} 
-    nombre={producto.title} categoria={producto.category} descripcion={producto.description}
-    precio={producto.price} imagen={producto.image}
+    prodMostrado = <ProductWidget key={producto._id} id={producto._id} 
+    nombre={producto.product_name} categoria={producto.product_category} descripcion={producto.product_description}
+    precio={producto.product_price} imagen={producto.product_img}
     />;
 
     prodDetail = <ProductDetailWidget props={producto}/>
