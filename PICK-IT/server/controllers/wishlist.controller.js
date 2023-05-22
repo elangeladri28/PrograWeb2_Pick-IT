@@ -74,16 +74,48 @@ const add = async (req = require, res = response) => {
 	}
 }
 
-//const remove = async (req = require, res = response) => {
-	//try{
-	
-	//}
-//}
+const remove = async (req = require, res = response) => {
+	try{
+		const { wishlistId, productId } = req.body;
+		const wishlistDetail = await Wishlist_detail.findOneAndDelete({
+			wishlist_id: wishlistId,
+			product_id: productId
+		});
+
+		res.status(200).json({
+			msg:"Elemento de la whislist eliminado"
+		});
+
+	}catch(error){
+		console.log(error);
+		res.status(500).json({"error":error});
+	}
+}
+
+const getWishlistItems = async (req = request, res = response) => {
+	try{
+		const user = await User.findById(req.user);
+		let wishlists = await Wishlist_detail.find().populate('wishlist_id', {
+			user_email: 1,
+			_id: 0
+		}).populate('product_id');
+
+		wishlists = wishlists.filter( wishlist => wishlist.wishlist_id.user_email == user.email);
+
+		res.json(wishlists);
+		
+	}catch(error){
+		console.log(error);
+		res.status(500).json({error});
+	}
+}
 
 
 module.exports = {
 	newWishlist,
 	add,
+	remove,
 	getWishlist,
-	deleteWishlist 
+	deleteWishlist,
+	getWishlistItems
 }

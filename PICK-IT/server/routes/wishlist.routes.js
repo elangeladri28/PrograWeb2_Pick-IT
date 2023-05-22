@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { valids } = require('../middlewares/valids');
-const { newWishlist, add, getWishlist ,deleteWishlist } = require('../controllers/wishlist.controller.js');
+const { newWishlist, add, getWishlist ,deleteWishlist, remove, getWishlistItems} = require('../controllers/wishlist.controller.js');
 const multer = require('multer');
 const form = multer();
 
@@ -29,5 +29,16 @@ router.delete('/delete', [
 	validarJWT,
 	valids
 ], deleteWishlist);
+
+router.get('/getItems', [
+	validarJWT,
+	valids
+], getWishlistItems);
+
+router.delete('/remove', [
+	form.single(),
+	validarJWT,
+	valids
+], remove);
 
 module.exports = router;
