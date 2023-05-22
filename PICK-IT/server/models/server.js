@@ -33,6 +33,8 @@ class Server{
         this.app.use('/users', require('../routes/users.routes.js'));
         this.app.use('/products', require('../routes/product.routes.js'));
         this.app.use('/carts', require('../routes/carts.routes.js'));
+		this.app.use('/wishlist', require('../routes/wishlist.routes.js'));
+		this.app.use('/purchase', require('../routes/purchase.routes.js'));
     }
 
     listener(){

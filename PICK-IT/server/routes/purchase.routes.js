@@ -1,21 +1,21 @@
 const { Router } = require('express');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { add, getCartItems } = require('../controllers/carts.controller');
 const { valids } = require('../middlewares/valids');
+const { purchaseItems, history } = require('../controllers/purchase.controller.js');
+
 const multer = require('multer');
-const form = multer();
+const form  = multer();
 
 const router = Router();
 
-router.post('/add', [
-    form.single(),
-    validarJWT,
-    valids
-], add);
+router.post('/pay', [
+	validarJWT,
+	valids
+], purchaseItems);
 
-router.get('/get',[
-    validarJWT,
-    valids
-],getCartItems)
+router.get('/history', [
+	validarJWT,
+	valids
+], history);
 
 module.exports = router;
