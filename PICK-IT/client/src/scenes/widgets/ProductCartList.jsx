@@ -8,8 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, useTheme } from "@mui/material";
 import Deleteicon from "components/Deleteicon";
-import SelectCantidad from "components/SelectCantidad";
-import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -27,7 +25,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -100,7 +97,7 @@ export default function CustomizedTables() {
     });
 
     prodsCarComp.push(
-      <StyledTableRow>
+      <StyledTableRow key="totalpayrow">
         <StyledTableCell align="right">
           <Typography color={dark} variant="h2" fontWeight="500">
             Total a pagar:   

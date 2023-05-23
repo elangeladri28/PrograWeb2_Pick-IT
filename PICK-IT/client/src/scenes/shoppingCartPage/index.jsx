@@ -4,10 +4,9 @@ import TableContainer from "scenes/widgets/ProductCartList";
 import WidgetWrapper from "components/WidgetWrapper";
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { dark } from "@mui/material/styles/createPalette";
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-// import SnackWidget from './SnackWidget';
+import SnackWidget from "scenes/widgets/SnackWidget";
 
 export function BasicButtons() {
     return (
@@ -36,8 +35,11 @@ const ShoppingCartPage = () => {
 
         res = await res.json();
 
-        if(res.length == 0)
-            return;
+        if(res){
+            setSnack({open: true, type: 'success', message:'Compra realizada exitosamente.'});
+        } else {
+            setSnack({open: true, type: 'error', message:'No se pudo realizar su compra.'});
+        }
 
         const cartItems = document.querySelectorAll('tbody>tr');
         cartItems.forEach( item => item.remove());
@@ -50,6 +52,12 @@ const ShoppingCartPage = () => {
     return (
         <Box>
             <Navbar />
+            <SnackWidget 
+            open={snack.open} 
+            type={snack.type}
+            message={snack.message}
+            handleClose={OnSnackClose}
+            />
             <Box
                 width="100%"
                 padding="2rem 6%"

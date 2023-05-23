@@ -7,11 +7,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, useTheme } from "@mui/material";
-import Deleteicon from "components/Deleteicon";
-import SelectCantidad from "components/SelectCantidad";
-import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,7 +25,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -45,7 +42,6 @@ export default function CustomizedTables() {
   useEffect(() => {
     const getItems = async () => {
       const getItemsRes = await fetch("http://localhost:8080/purchase/history",
-        //const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
         {
           method: "GET",
           headers: { xtkn: token },
@@ -64,17 +60,19 @@ export default function CustomizedTables() {
 
   if (items) {
     items.forEach(e => {
+      var date = new Date(e.purchase_id.purchase_date);
+      var newDate = format(date, 'dd/MM/yyyy');
+      //console.log(newDate);
         itemComp.push(
-        <StyledTableRow>
+        <StyledTableRow key={e._id}>
           <StyledTableCell>
             <img width="30%" height="30%" alt="advert" src={`http://localhost:8080/${e.product_id.product_img}`} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
           </StyledTableCell>
           <StyledTableCell component="th" scope="row">
             {e.product_id.product_name}
           </StyledTableCell>
-          {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-          <StyledTableCell align="right"> ${e.purchase_id.purchase_date} </StyledTableCell>
+          <StyledTableCell align="right"> {newDate} </StyledTableCell>
         </StyledTableRow>
       );
     });
