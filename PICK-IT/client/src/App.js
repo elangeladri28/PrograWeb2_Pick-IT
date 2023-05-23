@@ -6,6 +6,7 @@ import SearchPage from 'scenes/searchPage';
 import ProductPage from 'scenes/productPage';
 import WishlistPage from 'scenes/wishlistPage';
 import ShoppingCart from 'scenes/shoppingCartPage';
+import HistoryPage from 'scenes/historyPage';
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -30,6 +31,7 @@ function App() {
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
             <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
+            <Route path="/historyPurchase" element={isAuth ? <HistoryPage/> : <Navigate to="/" />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
