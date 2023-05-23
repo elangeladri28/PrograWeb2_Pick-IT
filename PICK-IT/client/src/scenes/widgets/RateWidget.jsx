@@ -19,9 +19,7 @@ const rateProduct = async (prod, calf = 1, token) => {
   );
   const req = await res.json();
   if (req) {
-    console.log(req);
-    console.log("Producto: " + prod.product_id + " rate: " + calf);
-
+    console.log("Producto: " + prod.product_id + " Rate: " + calf);
   }
   }
 

@@ -1,49 +1,43 @@
 import { Typography, useTheme, Box, Card, CardContent } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
-//import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const CommentWidget = () => {
+const CommentWidget = (props) => {
     const { palette } = useTheme();
-    //const navigate = useNavigate();
     const dark = palette.neutral.dark;
     const main = palette.neutral.main;
     const medium = palette.neutral.medium;
 
-    const itemData = [
-        {
-            name: 'Antonio',
-            comment: 'Todo lo que necesitas en una gráfica.',
-        },
-        {
-            name: 'Irving',
-            comment: 'Excelente para mejorar tu PC.',
-        },
-        {
-            name: 'Hector',
-            comment: 'Requiere una gran fuente de poder en tu PC para un mejor funcionamiento.',
-        },
-        {
-            name: 'Alan',
-            comment: 'Perfecta por el precio.',
-        },
-        {
-            name: 'Hector',
-            comment: 'Requiere una gran fuente de poder en tu PC para un mejor funcionamiento.',
-        },
-        {
-            name: 'Irving',
-            comment: 'Excelente para mejorar tu PC.',
-        },
-        {
-            name: 'Alan',
-            comment: 'Perfecta por el precio.',
-        },
-        {
-            name: 'Antonio',
-            comment: 'Todo lo que necesitas en una gráfica.',
-        },
-    ];
+    const [comments, setComments] = useState();
+    const showComments = [];
+    useEffect(() => {
+        fetch("http://localhost:8080/comment/" + props.product_id)
+        .then((res) => res.json())
+        .then((coms) => {
+            setComments(coms);
+            //console.log(coms);
+        });
+    }, [props]);
 
+    if (comments){
+        console.log(comments);
+        comments.map(e =>{
+            showComments.push(
+                <Card key={e._id} sx={{ maxWidth: 345 }}>
+                <CardContent>
+                    <Typography color={medium} gutterBottom variant="h5" component="div">
+                        {e.user_email}
+                    </Typography>
+                    <Typography color={dark} variant="body2">
+                        {e.content}
+                    </Typography>
+                </CardContent>
+            </Card>
+            )
+            return 0;
+        })
+    }
+        
     return (
         <Box display="flex"
             width="100%"
@@ -60,18 +54,7 @@ const CommentWidget = () => {
                 flexWrap="wrap"
                 justifyContent="center"
             >
-                {itemData.map((item) => (
-                    <Card sx={{ maxWidth: 345 }}>
-                        <CardContent>
-                            <Typography color={medium} gutterBottom variant="h5" component="div">
-                                {item.name}
-                            </Typography>
-                            <Typography color={dark} variant="body2">
-                                {item.comment}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                ))}
+                {showComments}
 
             </WidgetWrapper>
 

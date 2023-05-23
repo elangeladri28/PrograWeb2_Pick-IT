@@ -5,13 +5,14 @@ import Navbar from "scenes/navbar";
 import ProductWidget from "scenes/widgets/ProductWidget";
 import ProductDetailWidget from "scenes/widgets/ProductDetailWidget";
 //import ProductImage from "components/ProductImage";
-//import CommentWidget from "scenes/widgets/CommentWidget";
+import CommentWidget from "scenes/widgets/CommentWidget";
 
 const ProductPage = () => {
   const { productId } = useParams();
   const [producto, setProducto] = useState(null);
   var prodMostrado = null;
   var prodDetail = null;
+  var showCommentW = null;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   useEffect(() => {
@@ -29,6 +30,8 @@ const ProductPage = () => {
     />;
 
     prodDetail = <ProductDetailWidget props={producto}/>
+    
+    showCommentW = <CommentWidget product_id={producto._id} />
   }
 
   return (
@@ -47,11 +50,9 @@ const ProductPage = () => {
         <Box flexBasis={isNonMobileScreens ? "50%" : undefined}>
           {prodDetail}
         </Box>
-
-
       </Box>
-      
-      {/* <CommentWidget /> */}
+
+      {showCommentW}
       
     </Box>
   );
