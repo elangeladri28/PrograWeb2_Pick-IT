@@ -1,0 +1,16 @@
+const { Router } = require('express');
+const { validarJWT } = require('../middlewares/validar-JWT');
+const { valids } = require('../middlewares/valids');
+const { purchaseItems } = require('../controllers/purchase.controller.js');
+
+const multer = require('multer');
+const form  = multer();
+
+const router = Router();
+
+router.post('/pay', [
+	validarJWT,
+	valids
+], purchaseItems);
+
+module.exports = router;
