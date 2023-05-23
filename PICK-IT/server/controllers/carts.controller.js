@@ -58,7 +58,24 @@ const getCartItems = async (req = request, res = response) => {
     }
 }
 
+const deleteItem = async (req = request, res = response) => {
+	try{
+		const { cartId } = req.body;
+		const itemDeleted = await Cart_detail.findByIdAndDelete(cartId);
+
+		console.log('Cart', cartId);
+
+		res.status(200).json(itemDeleted);
+	}catch(error){
+		console.log(err);
+        res.status(500).json({
+            msg: "Algo sucedio al eliminar el elemento del carrito"
+        });
+	}
+}
+
 module.exports = {
     add,
-    getCartItems
+    getCartItems,
+	deleteItem
 }
