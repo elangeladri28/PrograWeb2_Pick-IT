@@ -10,6 +10,8 @@ import { Typography, useTheme } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import RateWidget from './RateWidget';
+import SendCommentWidget from './SendCommentWidget';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,7 +39,6 @@ export default function CustomizedTables() {
   const token = useSelector((state) => state.token);
   const [items, setItems] = useState(null);
   var itemComp = [];
-  //const [itemsCar, setItemsCar] = useState(null);
 
   useEffect(() => {
     const getItems = async () => {
@@ -58,12 +59,13 @@ export default function CustomizedTables() {
     getItems().catch(console.error);
   }, [token]);
 
+
   if (items) {
     items.forEach(e => {
       var date = new Date(e.purchase_id.purchase_date);
       var newDate = format(date, 'dd/MM/yyyy');
       //console.log(newDate);
-        itemComp.push(
+      itemComp.push(
         <StyledTableRow key={e._id}>
           <StyledTableCell>
             <img width="30%" height="30%" alt="advert" src={`http://localhost:8080/${e.product_id.product_img}`} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
@@ -73,6 +75,15 @@ export default function CustomizedTables() {
           </StyledTableCell>
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
           <StyledTableCell align="right"> {newDate} </StyledTableCell>
+
+          <StyledTableCell align="right"  >
+            <RateWidget product_id={e.product_id._id} token={token} rate={e.product_id} />
+          </StyledTableCell>
+
+          <StyledTableCell align="right">
+              <SendCommentWidget/>
+          </StyledTableCell>
+
         </StyledTableRow>
       );
     });
@@ -100,8 +111,16 @@ export default function CustomizedTables() {
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-                    Fecha de compra
+                Fecha de compra
               </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography color={dark} variant="h3" fontWeight="500">
+                Calficar
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+
             </StyledTableCell>
           </TableRow>
         </TableHead>

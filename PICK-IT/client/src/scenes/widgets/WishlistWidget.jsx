@@ -29,7 +29,7 @@ const WhishlistWidget = () => {
 
     const handleChange = e =>{
         setNombreWish(e.target.value);
-        //console.log(nombreWish);
+        console.log(nombreWish);
     }
 
     const newWhisList = async () => {
@@ -54,8 +54,9 @@ const WhishlistWidget = () => {
         if (nombreWish) {
             setSnack({open: true, type: 'success', message:'Perfil actualizado exitosamente.'});
             newWhisList();
+            
         } else {
-            setSnack({open: true, type: 'error', message:'Asigna un nombre a tu nueva bolsa.'});
+            setSnack({open: true, type: 'error', message:'Asigna un nombre a tu nueva bolsa de deseos.'});
         }
     };
 
@@ -86,8 +87,8 @@ const WhishlistWidget = () => {
                 }}
                 unmountOnExit
             >
-                <Fab sx={fabStyle} aria-label="Add" color="primary">
-                    <AddIcon onClick={()=>handleSubmit()} />
+                <Fab sx={fabStyle} aria-label="Add" color="primary" onClick={()=>handleSubmit()}>
+                    <AddIcon />
                 </Fab>
             </Zoom>
         </Box>

@@ -59,9 +59,9 @@ export default function CustomizedTables() {
     getItemsCar().catch(console.error);
   }, [token]);
 
-  const delItemfromCar = async (productID, cartID) => {
+  const delItemfromCar = async (prodCartID) => {
     const formData = new FormData();
-    formData.append("cartId", cartID);
+    formData.append("cartId", prodCartID);
 
     const deleteWLRes = await fetch("http://localhost:8080/carts/delete",
       {
@@ -73,9 +73,9 @@ export default function CustomizedTables() {
 
     const deleteWL = await deleteWLRes.json();
     if (deleteWL) {
-      console.log("Producto elimnado del carrito: " + productID);
+      console.log("Producto eliminado del carrito.");
     } else {
-      console.log("No existe endpoint para eliminar producto del carrito.");
+      console.log("Fallo al intentar eliminar el producto del carrito.");
     }
   };
 
@@ -91,7 +91,7 @@ export default function CustomizedTables() {
           </StyledTableCell>
           {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-          <StyledTableCell align="right" onClick={() => delItemfromCar(e.product_id._id, e._id)}> <Deleteicon /> </StyledTableCell>
+          <StyledTableCell align="right" onClick={() => delItemfromCar(e._id)}> <Deleteicon /> </StyledTableCell>
         </StyledTableRow>
       );
     });

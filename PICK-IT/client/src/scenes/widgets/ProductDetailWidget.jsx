@@ -1,4 +1,4 @@
-import { Typography, useTheme, Box, Divider, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Typography, useTheme, Box, Divider, Button, Select, MenuItem, InputLabel, FormControl, Rating } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { useSelector } from 'react-redux';
 import SnackWidget from './SnackWidget';
@@ -131,7 +131,7 @@ const ProductDetailWidget = ({ props }) => {
             <Divider />
 
             <FlexBetween p="1rem 0">
-                <Typography color={main}>AMD</Typography>
+                <Rating name="read-only" value={props.product_rate} readOnly />
                 <Typography color={medium}> {props.product_category} </Typography>
             </FlexBetween>
 
