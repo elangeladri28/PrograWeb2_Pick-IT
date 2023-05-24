@@ -73,12 +73,12 @@ const ProductLargeWidget = ({ product }) => {
       </FlexBetween>
 
       <FlexBetween>
-        <Box maxHeight="200px" maxWidth="200px" onClick={() => navigate("/product")}>
+        <Box maxHeight="200px" maxWidth="200px" onClick={() => navigate("/product/"+product[0]._id)}>
           <img
             width="100%"
             height="100%"
             alt="advert"
-            src={product[0].product_img}
+            src={`http://localhost:8080/${product[0].product_img}`}
             style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
           />
         </Box>
