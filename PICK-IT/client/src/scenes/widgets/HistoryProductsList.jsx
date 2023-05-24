@@ -7,11 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, useTheme } from "@mui/material";
-import Deleteicon from "components/Deleteicon";
-import SelectCantidad from "components/SelectCantidad";
-import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import RateWidget from './RateWidget';
+import SendCommentWidget from './SendCommentWidget';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,7 +27,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -40,12 +39,10 @@ export default function CustomizedTables() {
   const token = useSelector((state) => state.token);
   const [items, setItems] = useState(null);
   var itemComp = [];
-  //const [itemsCar, setItemsCar] = useState(null);
 
   useEffect(() => {
     const getItems = async () => {
       const getItemsRes = await fetch("http://localhost:8080/purchase/history",
-        //const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
         {
           method: "GET",
           headers: { xtkn: token },
@@ -62,19 +59,31 @@ export default function CustomizedTables() {
     getItems().catch(console.error);
   }, [token]);
 
+
   if (items) {
     items.forEach(e => {
-        itemComp.push(
-        <StyledTableRow>
+      var date = new Date(e.purchase_id.purchase_date);
+      var newDate = format(date, 'dd/MM/yyyy');
+      //console.log(newDate);
+      itemComp.push(
+        <StyledTableRow key={e._id}>
           <StyledTableCell>
             <img width="30%" height="30%" alt="advert" src={`http://localhost:8080/${e.product_id.product_img}`} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
           </StyledTableCell>
           <StyledTableCell component="th" scope="row">
             {e.product_id.product_name}
           </StyledTableCell>
-          {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-          <StyledTableCell align="right"> ${e.purchase_id.purchase_date} </StyledTableCell>
+          <StyledTableCell align="right"> {newDate} </StyledTableCell>
+
+          <StyledTableCell align="right"  >
+            <RateWidget product_id={e.product_id._id} token={token} rate={e.product_id} />
+          </StyledTableCell>
+
+          <StyledTableCell align="right">
+              <SendCommentWidget/>
+          </StyledTableCell>
+
         </StyledTableRow>
       );
     });
@@ -102,8 +111,16 @@ export default function CustomizedTables() {
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-                    Fecha de compra
+                Fecha de compra
               </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography color={dark} variant="h3" fontWeight="500">
+                Calficar
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+
             </StyledTableCell>
           </TableRow>
         </TableHead>

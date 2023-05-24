@@ -8,8 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, useTheme } from "@mui/material";
 import Deleteicon from "components/Deleteicon";
-import SelectCantidad from "components/SelectCantidad";
-import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -27,7 +25,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -62,9 +59,9 @@ export default function CustomizedTables() {
     getItemsCar().catch(console.error);
   }, [token]);
 
-  const delItemfromCar = async (productID, cartID) => {
+  const delItemfromCar = async (prodCartID) => {
     const formData = new FormData();
-    formData.append("cartId", cartID);
+    formData.append("cartId", prodCartID);
 
     const deleteWLRes = await fetch("http://localhost:8080/carts/delete",
       {
@@ -76,9 +73,9 @@ export default function CustomizedTables() {
 
     const deleteWL = await deleteWLRes.json();
     if (deleteWL) {
-      console.log("Producto elimnado del carrito: " + productID);
+      console.log("Producto eliminado del carrito.");
     } else {
-      console.log("No existe endpoint para eliminar producto del carrito.");
+      console.log("Fallo al intentar eliminar el producto del carrito.");
     }
   };
 
@@ -94,13 +91,13 @@ export default function CustomizedTables() {
           </StyledTableCell>
           {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-          <StyledTableCell align="right" onClick={() => delItemfromCar(e.product_id._id, e._id)}> <Deleteicon /> </StyledTableCell>
+          <StyledTableCell align="right" onClick={() => delItemfromCar(e._id)}> <Deleteicon /> </StyledTableCell>
         </StyledTableRow>
       );
     });
 
     prodsCarComp.push(
-      <StyledTableRow>
+      <StyledTableRow key="totalpayrow">
         <StyledTableCell align="right">
           <Typography color={dark} variant="h2" fontWeight="500">
             Total a pagar:   

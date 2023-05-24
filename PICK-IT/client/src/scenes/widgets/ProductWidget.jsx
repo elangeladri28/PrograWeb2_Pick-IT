@@ -7,7 +7,6 @@ const ProductWidget = ({
   id = "0",
   nombre = "AMD Radeon RX 6600 ZT", 
   marca = "AMD",
-  proveedor = "amd.com",
   descripcion = "La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2, nació para ofrecerte la mejor experiencia de juego en 1080p.",
   categoria = "Tarjetas gráficas",
   precio = "$5,500" ,
@@ -37,12 +36,12 @@ const ProductWidget = ({
         width="100%"
         height="auto"
         alt="advert"
-        src={imagen}
+        src={`http://localhost:8080/${imagen}`}
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}> {marca} </Typography>
-        <Typography color={medium}> {proveedor} </Typography>
+        <Typography color={main}> ${precio} </Typography>
+        <Typography color={medium}> {categoria} </Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0"> {descripcion} </Typography>
     </WidgetWrapper>

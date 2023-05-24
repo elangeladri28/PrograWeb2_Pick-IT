@@ -1,16 +1,13 @@
 import React from "react";
-import { Drawer, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Box, useTheme, } from "@mui/material";
+import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Box, useTheme, } from "@mui/material";
 import { VerifiedRounded, ProductionQuantityLimitsRounded, VerifiedUserRounded } from "@mui/icons-material";
-import WidgetWrapper from "components/WidgetWrapper";
-import ProductWidget from "./ProductWidget";
 
-
-export default function ShoppingCartWidget({ state, setState, toggleDrawer }) {
+export default function ShoppingCartWidget({ state, toggleDrawer }) {
 
     const { palette } = useTheme();
     const dark = palette.primary.dark;
     const main = palette.background.default;
-    const medium = palette.neutral.medium;
+    //const medium = palette.neutral.medium;
 
     const list = (anchor) => (
         <Box
