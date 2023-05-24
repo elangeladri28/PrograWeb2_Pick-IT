@@ -1,12 +1,18 @@
-import { AddBoxSharp } from "@mui/icons-material";
+import { ConstructionOutlined } from "@mui/icons-material";
 import { Typography, useTheme, Box } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useNavigate } from "react-router-dom";
 
-
-
-const ProductWidget = () => {
+const ProductWidget = ({
+  id = "0",
+  nombre = "AMD Radeon RX 6600 ZT",
+  marca = "AMD",
+  descripcion = "La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2, nació para ofrecerte la mejor experiencia de juego en 1080p.",
+  categoria = "Tarjetas gráficas",
+  precio = "$5,500",
+  imagen = "../assets/amd-radeon-rx-6600-xt.webp",
+}) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const dark = palette.neutral.dark;
@@ -17,9 +23,9 @@ const ProductWidget = () => {
     <WidgetWrapper margin="1rem">
       <FlexBetween>
         <Typography color={dark} variant="h5" fontWeight="500">
-          AMD Radeon RX 6600 ZT
+          {nombre}
         </Typography>
-        <Typography color={medium} onClick={() => navigate("/product")}
+        <Typography color={medium} onClick={() => navigate("/product/" + id)}
           sx={{
             "&:hover": {
               color: main,
@@ -31,33 +37,36 @@ const ProductWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="../assets/amd-radeon-rx-6600-xt.webp"
+        src={`http://localhost:8080/${imagen}`}
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>AMD</Typography>
-        <Typography color={medium}>amd.com</Typography>
+        <Typography color={main}> ${precio} </Typography>
+        <Typography color={medium}> {categoria} </Typography>
       </FlexBetween>
-      <Typography color={medium} m="0.5rem 0">
-        La tarjeta gráfica AMD Radeon™ RX 6600 XT, diseñada con la revolucionaria arquitectura AMD RDNA™ 2,
-        nació para ofrecerte la mejor experiencia de juego en 1080p.
-      </Typography>
+      <Typography color={medium} m="0.5rem 0"> {descripcion} </Typography>
     </WidgetWrapper>
   );
 };
 
-const ProductLargeWidget = () => {
+const ProductLargeWidget = ({ product }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
+  var cero = 0;
+
+  console.log(product);
+  console.log(product[0].product_name);
+  // console.log(props[cero].product_name);
+
   return (
     <WidgetWrapper margin="1rem">
       <FlexBetween>
         <Typography color={dark} variant="h5" fontWeight="500">
-          NVIDIA Geforce RTX 3080
+          {product[0].product_name}
         </Typography>
         <Typography color={medium}>Ver detalles</Typography>
 
@@ -69,22 +78,21 @@ const ProductLargeWidget = () => {
             width="100%"
             height="100%"
             alt="advert"
-            src="../assets/nvidia-geforce-rtx-3080.webp"
+            src={product[0].product_img}
             style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
           />
         </Box>
         <Box p="2rem">
           <Typography color={medium} m="0.5rem 0">
-            Las tarjetas gráficas GeForce RTX™ 3080 Ti y RTX 3080 ofrecen el alto rendimiento que buscan los gamers.
-            Basado en Ampere, la segunda generación de la arquitectura RTX de NVIDIA, cuentan con Núcleos RT mejorados y Núcleos Tensor, nuevos multiprocesadores de transmisión y memorias GDDR6X súper rápidas, para una experiencia de juego simplemente increíble.
+            {product[0].product_description}
           </Typography>
         </Box>
 
       </FlexBetween>
 
       <FlexBetween>
-        <Typography color={main}>NVIDIA</Typography>
-        <Typography color={medium}>nvidia.com</Typography>
+        <Typography color={main}>{product[0].product_price}</Typography>
+        <Typography color={medium}>{product[0].product_category}</Typography>
       </FlexBetween>
     </WidgetWrapper>
   );

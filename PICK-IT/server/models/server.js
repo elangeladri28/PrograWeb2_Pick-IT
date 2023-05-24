@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../db/config');
+const path = require('path');
 
 class Server{
     constructor(){
@@ -25,10 +26,16 @@ class Server{
     middlewares(){
         this.app.use(cors());
         this.app.use( express.json() );
+        this.app.use(express.static(path.join(__dirname, '/../uploads')));
     }
 
     routes(){
         this.app.use('/users', require('../routes/users.routes.js'));
+        this.app.use('/products', require('../routes/product.routes.js'));
+        this.app.use('/carts', require('../routes/carts.routes.js'));
+		this.app.use('/wishlist', require('../routes/wishlist.routes.js'));
+		this.app.use('/purchase', require('../routes/purchase.routes.js'));
+		this.app.use('/comment', require('../routes/comments.routes.js'));
     }
 
     listener(){

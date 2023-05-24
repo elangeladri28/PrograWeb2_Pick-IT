@@ -1,14 +1,31 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
-import UserWidget from "scenes/widgets/UserWidget";
 import ProductWidget from "scenes/widgets/ProductWidget";
 import ProductCarousel from "components/ProductCarousel";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  //const { _id, picturePath } = useSelector((state) => state.user);
 
+  const [productos, setProductos] = useState(null);
+  var productComp = [];
+
+  useEffect(()=> {
+    fetch("http://localhost:8080/products/getAll")
+    .then((res) => res.json())
+    .then((product) => {
+      setProductos(product.products);
+    });
+  }, [])
+
+  if (productos) {
+    console.log(productos);
+    productos.forEach((item) => {
+      productComp.push(<ProductWidget key={item._id} id={item._id}
+        nombre={item.product_name} categoria={item.product_category} descripcion={item.product_description}
+        precio={item.product_price} imagen={item.product_img} />);
+    })
+  }
   return (
     <Box>
       <Navbar />
@@ -23,12 +40,10 @@ const HomePage = () => {
           <Box marginBottom="2.5rem" display="block" sx={{ p: "20px", backgroundColor: '#DA0037'}}></Box>
         
         <Box
-          display="flex"
+          sx={{display:"grid",
+          gridTemplateColumns:"repeat(4, 1fr)"}}
         >
-          <ProductWidget />
-          <ProductWidget />
-          <ProductWidget />
-          <ProductWidget />
+          {productComp}
         </Box>
       </Box>
 

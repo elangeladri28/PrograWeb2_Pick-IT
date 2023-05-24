@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,10 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Typography, useTheme, Box } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import Deleteicon from "components/Deleteicon";
-import SelectCantidad from "components/SelectCantidad";
-import Select from '@mui/material/Select';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,57 +25,88 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }));
 
-function createData(Img, Producto, Cantidad, Precio, Estado) {
-  return { Img, Producto, Cantidad, Precio, Estado };
-}
-
-const rows = [
-  createData( <img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad><Select>value={2}</Select></SelectCantidad>, 100, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 200, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 200, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 100, <Deleteicon/>),
-  createData(<img
-    width="30%"
-    height="30%"
-    alt="advert"
-    src="../assets/nvidia-geforce-rtx-3080.webp"
-    style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-  />, 'NVIDIA Geforce RTX 3080', <SelectCantidad/>, 500, <Deleteicon/>)
-];
-
 export default function CustomizedTables() {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
+
+  const token = useSelector((state) => state.token);
+  const [prodsCar, setProdsCar] = useState(null);
+  var prodsCarComp = [];
+  //const [itemsCar, setItemsCar] = useState(null);
+
+  useEffect(() => {
+    const getItemsCar = async () => {
+      const getItemsCarRes = await fetch("http://localhost:8080/carts/get",
+        //const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
+        {
+          method: "GET",
+          headers: { xtkn: token },
+        }
+      );
+
+      const itemsCar = await getItemsCarRes.json();
+      if (itemsCar) {
+        console.log(itemsCar);
+        setProdsCar(itemsCar);
+      }
+    };
+
+    getItemsCar().catch(console.error);
+  }, [token]);
+
+  const delItemfromCar = async (prodCartID) => {
+    const formData = new FormData();
+    formData.append("cartId", prodCartID);
+
+    const deleteWLRes = await fetch("http://localhost:8080/carts/delete",
+      {
+        method: "DELETE",
+        headers: { xtkn: token },
+        body: formData,
+      }
+    );
+
+    const deleteWL = await deleteWLRes.json();
+    if (deleteWL) {
+      console.log("Producto eliminado del carrito.");
+    } else {
+      console.log("Fallo al intentar eliminar el producto del carrito.");
+    }
+  };
+
+  if (prodsCar) {
+    prodsCar.carts.forEach(e => {
+      prodsCarComp.push(
+        <StyledTableRow key={e._id}>
+          <StyledTableCell>
+            <img width="30%" height="30%" alt="advert" src={e.product_img} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
+          </StyledTableCell>
+          <StyledTableCell component="th" scope="row">
+            {e.product_id.product_name}
+          </StyledTableCell>
+          {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
+          <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
+          <StyledTableCell align="right" onClick={() => delItemfromCar(e._id)}> <Deleteicon /> </StyledTableCell>
+        </StyledTableRow>
+      );
+    });
+
+    prodsCarComp.push(
+      <StyledTableRow key="totalpayrow">
+        <StyledTableCell align="right">
+          <Typography color={dark} variant="h2" fontWeight="500">
+            Total a pagar:   
+            ${prodsCar.carts.map(cart => cart.product_id.product_price).reduce((acum, current) => acum + current, 0)}
+          </Typography>
+        </StyledTableCell>
+      </StyledTableRow>
+    )
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -95,37 +125,18 @@ export default function CustomizedTables() {
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-                Cantidad
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell align="right">
-              <Typography color={dark} variant="h3" fontWeight="500">
                 Precio
               </Typography>
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-                ¿Mantener?
+
               </Typography>
             </StyledTableCell>
-
-
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.Producto}>
-              <StyledTableCell>
-                {row.Img}
-              </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
-                {row.Producto}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.Cantidad}</StyledTableCell>
-              <StyledTableCell align="right">{row.Precio}</StyledTableCell>
-              <StyledTableCell align="right">{row.Estado}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {prodsCarComp}
         </TableBody>
       </Table>
     </TableContainer>
