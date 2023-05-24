@@ -86,12 +86,26 @@ const getByName = async(req = request, res = response) => {
 		}
 }
 
+const rate = async(req = request, res = response) => {
+	try{
+		const { productId, calif} = req.body;
+		const productUpdated = await Product.findByIdAndUpdate( productId, {product_rate: calif} );
+		res.status(200).json(productUpdated);
+
+		
+	}catch(error){
+		console.log(error);
+		res.status(500).json({error});
+	}
+}
+
 module.exports = {
     addProduct,
     getAll,
     get,
 	getByCategory,
-	getByName
+	getByName,
+	rate
 }
 
 

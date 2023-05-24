@@ -21,7 +21,11 @@ const Products = Schema({
     product_img:{
         type:String,
         required: [true, 'El proucto debe tener una imagen']
-    }
+    },
+	product_rate:{
+		type:Number,
+		default: 0
+	}
 });
 
 module.exports = model("Product", Products)

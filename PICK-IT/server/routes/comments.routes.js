@@ -1,27 +1,19 @@
 const { Router } = require('express');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { add, getCartItems, deleteItem } = require('../controllers/carts.controller');
 const { valids } = require('../middlewares/valids');
+const { postComment, getComments } = require('../controllers/comments.controller');
 const multer = require('multer');
 const form = multer();
 
 const router = Router();
 
-router.post('/add', [
-    form.single(),
-    validarJWT,
-    valids
-], add);
-
-router.get('/get',[
-    validarJWT,
-    valids
-],getCartItems)
-
-router.delete('/delete', [
+router.post('/post', [
 	form.single(),
 	validarJWT,
 	valids
-], deleteItem);
+], postComment);
+
+router.get('/:productId', getComments);
+
 
 module.exports = router;

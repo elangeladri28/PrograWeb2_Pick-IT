@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addProduct, getAll, get, getByCategory, getByName } = require('../controllers/product.controller.js');
+const { addProduct, getAll, get, getByCategory, getByName, rate } = require('../controllers/product.controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const multer = require('multer');
 const { valids } = require('../middlewares/valids');
@@ -21,5 +21,6 @@ router.get('/getAll', getAll);
 router.get('/:prod_id',upload.single(), get);
 router.get('/category/:cat_name', upload.single(), getByCategory);
 router.get('/name/:product_name', upload.single(), getByName);
+router.put('/rate', upload.single(), rate);
 
 module.exports = router;
