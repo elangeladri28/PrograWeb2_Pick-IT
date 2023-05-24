@@ -51,7 +51,7 @@ export default function CustomizedTables() {
 
       const items = await getItemsRes.json();
       if (items) {
-        console.log(items);
+        //console.log(items);
         setItems(items);
       }
     };
@@ -81,7 +81,7 @@ export default function CustomizedTables() {
           </StyledTableCell>
 
           <StyledTableCell align="right">
-              <SendCommentWidget/>
+              <SendCommentWidget product_id ={e.product_id._id} token={token}/>
           </StyledTableCell>
 
         </StyledTableRow>

@@ -1,27 +1,51 @@
 import { EditOutlined } from "@mui/icons-material";
-import { Typography, useTheme, Box, IconButton, TextField } from "@mui/material";
-//import { useNavigate } from "react-router-dom";
+import { Box, IconButton, TextField } from "@mui/material";
+import { useState } from "react";
+
+
+const postComment = async (token, prodID, comment) => {
+    const formData = new FormData();
+    formData.append("productId", prodID);
+    formData.append("commentContent", comment);
+
+    const res = await fetch("http://localhost:8080/comment/post",
+        {
+            method: "POST",
+            headers: { xtkn: token },
+            body: formData,
+        }
+    );
+
+    if (comment == null)
+        return;
+
+    const req = await res.json();
+    if (req) {
+        console.log("Producto: " + prodID + " Comentario: " + comment);
+    }
+}
 
 const CommentWidget = (props) => {
-    const { palette } = useTheme();
-    //const navigate = useNavigate();
-    const dark = palette.neutral.dark;
-    const main = palette.neutral.main;
-    const medium = palette.neutral.medium;
+    //console.log(props);
+    const [comment, setComment] = useState();
+
+    const handleChangeComment = (e) => {
+        setComment(e.target.value);
+        console.log(comment);
+    };
+
 
     return (
         <Box display="flex"
-            width="100%"
             gap="1rem"
             flexDirection="rows"
         >
-            <TextField id="outlined-multiline-flexible" label="Comentario" multiline maxRows={4} />
-            <IconButton onClick={() => { }}> <EditOutlined /> </IconButton>
+            <TextField id="outlined-multiline-flexible" label="Comentario" multiline maxRows={4} value={comment}
+             onChange={(e) =>handleChangeComment(e)}/>
+            <IconButton onClick={()=>postComment(props.token, props.product_id, comment)}> <EditOutlined /> </IconButton>
 
         </Box>
     );
-
-
 };
 
 export default CommentWidget;
