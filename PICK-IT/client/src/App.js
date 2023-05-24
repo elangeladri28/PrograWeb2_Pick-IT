@@ -27,8 +27,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" /> } />
-            <Route path="/search" element={<SearchPage />} />
-<<<<<<< Updated upstream
+            <Route path="/search/:nombreP" element={<SearchPage />} />
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
             <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
