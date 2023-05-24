@@ -10,7 +10,7 @@ const addProduct = async (req = request, res = response) => {
 
         
         
-        const { product_name, proucto_descripcion, product_price, product_category } = req.body;
+        const { product_name, product_description, product_price, product_category } = req.body;
         const cat = await Category.findOne({ category_name: product_category });
         const { thumbnail } = req;
 
@@ -22,7 +22,7 @@ const addProduct = async (req = request, res = response) => {
             return;
         }
 
-        const product = new Product({ product_name, proucto_descripcion, product_price, product_category });
+        const product = new Product({ product_name, product_description, product_price, product_category });
         product.product_img = thumbnail;
         await product.save();
 
