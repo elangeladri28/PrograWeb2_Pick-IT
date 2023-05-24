@@ -7,9 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, useTheme } from "@mui/material";
-import Deleteicon from "components/Deleteicon";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import RateWidget from './RateWidget';
+import SendCommentWidget from './SendCommentWidget';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,77 +37,56 @@ export default function CustomizedTables() {
   const dark = palette.neutral.dark;
 
   const token = useSelector((state) => state.token);
-  const [prodsCar, setProdsCar] = useState(null);
-  var prodsCarComp = [];
-  //const [itemsCar, setItemsCar] = useState(null);
+  const [items, setItems] = useState(null);
+  var itemComp = [];
 
   useEffect(() => {
-    const getItemsCar = async () => {
-      const getItemsCarRes = await fetch("http://localhost:8080/carts/get",
-        //const getItemsCarRes = await fetch("https://fakestoreapi.com/products?limit=6",
+    const getItems = async () => {
+      const getItemsRes = await fetch("http://localhost:8080/purchase/history",
         {
           method: "GET",
           headers: { xtkn: token },
         }
       );
 
-      const itemsCar = await getItemsCarRes.json();
-      if (itemsCar) {
-        console.log(itemsCar);
-        setProdsCar(itemsCar);
+      const items = await getItemsRes.json();
+      if (items) {
+        //console.log(items);
+        setItems(items);
       }
     };
 
-    getItemsCar().catch(console.error);
+    getItems().catch(console.error);
   }, [token]);
 
-  const delItemfromCar = async (prodCartID) => {
-    const formData = new FormData();
-    formData.append("cartId", prodCartID);
 
-    const deleteWLRes = await fetch("http://localhost:8080/carts/delete",
-      {
-        method: "DELETE",
-        headers: { xtkn: token },
-        body: formData,
-      }
-    );
-
-    const deleteWL = await deleteWLRes.json();
-    if (deleteWL) {
-      console.log("Producto eliminado del carrito.");
-    } else {
-      console.log("Fallo al intentar eliminar el producto del carrito.");
-    }
-  };
-
-  if (prodsCar) {
-    prodsCar.carts.forEach(e => {
-      prodsCarComp.push(
+  if (items) {
+    items.forEach(e => {
+      var date = new Date(e.purchase_id.purchase_date);
+      var newDate = format(date, 'dd/MM/yyyy');
+      //console.log(newDate);
+      itemComp.push(
         <StyledTableRow key={e._id}>
           <StyledTableCell>
-            <img width="30%" height="30%" alt="advert" src={e.product_img} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
+            <img width="30%" height="30%" alt="advert" src={`http://localhost:8080/${e.product_id.product_img}`} style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }} />
           </StyledTableCell>
           <StyledTableCell component="th" scope="row">
             {e.product_id.product_name}
           </StyledTableCell>
-          {/* <StyledTableCell align="right"> <SelectCantidad> <Select>value={1}</Select> </SelectCantidad> </StyledTableCell> */}
           <StyledTableCell align="right"> ${e.product_id.product_price} </StyledTableCell>
-          <StyledTableCell align="right" onClick={() => delItemfromCar(e._id)}> <Deleteicon /> </StyledTableCell>
+          <StyledTableCell align="right"> {newDate} </StyledTableCell>
+
+          <StyledTableCell align="right"  >
+            <RateWidget product_id={e.product_id._id} token={token} rate={e.product_id} />
+          </StyledTableCell>
+
+          <StyledTableCell align="right">
+              <SendCommentWidget product_id ={e.product_id._id} token={token}/>
+          </StyledTableCell>
+
         </StyledTableRow>
       );
     });
-
-    prodsCarComp.push(
-      <StyledTableRow key="totalpayrow">
-        <StyledTableCell align="right">
-          <Typography color={dark} variant="h2" fontWeight="500">
-            Total a pagar:   
-            ${prodsCar.carts.map(cart => cart.product_id.product_price).reduce((acum, current) => acum + current, 0)}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-    )
   }
 
   return (
@@ -130,13 +111,21 @@ export default function CustomizedTables() {
             </StyledTableCell>
             <StyledTableCell align="right">
               <Typography color={dark} variant="h3" fontWeight="500">
-
+                Fecha de compra
               </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography color={dark} variant="h3" fontWeight="500">
+                Calficar
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {prodsCarComp}
+          {itemComp}
         </TableBody>
       </Table>
     </TableContainer>

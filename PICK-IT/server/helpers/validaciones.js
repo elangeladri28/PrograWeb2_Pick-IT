@@ -6,7 +6,7 @@
 // const _correoRegExp = /^(.\S*)@uei.com$/
 // const _numerosRegExp = /^[0-9]{0,}$/;
 
-const _just_letters = /^[A-Za-z\s]+$/
+const _just_letters = /^[a-zA-Z\u00C0-\u017F\s]+$/
 const _pwd = /^((?=.+[A-Za-z])(?=.+\d)(?=.+[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,})$/
 
 const justLetters = (text = '') => {

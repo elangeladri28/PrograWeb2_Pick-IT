@@ -1,12 +1,8 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 
 const ProfilePage = () => {
-
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   return (
@@ -20,9 +16,8 @@ const ProfilePage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "50%" : undefined}>
-          <UserWidget userId={"userId"} picturePath={"user.picturePath"} />
+          <UserWidget/>
         </Box>
-
       </Box>
     </Box>
   );

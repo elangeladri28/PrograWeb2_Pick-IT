@@ -6,6 +6,7 @@ import SearchPage from 'scenes/searchPage';
 import ProductPage from 'scenes/productPage';
 import WishlistPage from 'scenes/wishlistPage';
 import ShoppingCart from 'scenes/shoppingCartPage';
+import HistoryPage from 'scenes/historyPage';
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -25,11 +26,12 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile/:userId" element={<ProfilePage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/product" element={<ProductPage />} />
-            <Route path="/whishlist" element={<WishlistPage />} />
-            <Route path="/shoppingcart" element={<ShoppingCart/>} />
+            <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" /> } />
+            <Route path="/search/:nombreP" element={<SearchPage />} />
+            <Route path="/product/:productId" element={<ProductPage />} />
+            <Route path="/whishlist" element={isAuth ? <WishlistPage /> : <Navigate to="/" />} />
+            <Route path="/shoppingcart" element={isAuth ? <ShoppingCart/> : <Navigate to="/" />} />
+            <Route path="/historyPurchase" element={isAuth ? <HistoryPage/> : <Navigate to="/" />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
